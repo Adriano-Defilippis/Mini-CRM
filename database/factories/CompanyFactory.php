@@ -17,9 +17,5 @@ $factory->define(Company::class, function (Faker $faker) {
         'logo' => $faker-> imageUrl,
         'website' =>  'www.' . str_replace(" ","-",$company_web_site) .'.com'
 
-        // 'name' =>  $faker-> word,
-        // 'email' => $faker-> word,
-        // 'logo' => $faker-> word,
-        // 'website' =>  $faker-> word
     ];
 });
