@@ -15,6 +15,8 @@
                     @endif
 
                     You are logged in!
+                    {{-- <a href="{{view('control_panel')}}">-></a> --}}
+                    <a href="{{view('control_panel')}}">-></a>
                 </div>
             </div>
         </div>
