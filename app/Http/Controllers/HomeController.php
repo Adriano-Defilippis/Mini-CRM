@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Employee;
+use App\Company;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('control_panel');
+
+        $companies = Company::all()->take(10);
+        $employees = Employee::all()->take(10);
+
+        $count_companies = Company::count();
+        $count_employees = Employee::count();
+        return view('control_panel', compact('companies', 'employees','count_companies', 'count_employees'));
     }
 }

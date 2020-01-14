@@ -37,6 +37,18 @@ class CompanyController extends Controller
         //
     }
 
+
+    /**
+     *SHOW NEXT 10 COMPANIES
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showMore(Request $request)
+    {
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
