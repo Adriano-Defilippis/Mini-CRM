@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Company;
 
 class CompanyController extends Controller
 {
@@ -47,6 +48,15 @@ class CompanyController extends Controller
     public function showMore(Request $request)
     {
 
+      $page = $request -> page;
+      $max = $page * 10;
+      $min = $max - 9;
+
+      $companies = Company::whereBetween('id', [$min, $max])->get();
+
+      return json_decode(
+        $companies
+      );
     }
 
     /**
