@@ -27,12 +27,52 @@
   </tbody>
 
 </table>
-{{-- Navigatore risultati --}}
-<p>
-  @php
-    $counter_employees = 1;
-  @endphp
-  @for ($i=1; $i <= $count_employees; $i+= 10)
-     <span class="nav_employees" data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
-  @endfor
-</p>
+
+<script type="text/javascript">
+
+
+  $(document).ready(init);
+
+  function init(){
+
+    console.log('holaaaa');
+    // Azione click su navigazione pagina
+    $(document).on('click','.nav_employees', function(){
+
+      // remove color placeholder
+      $('.nav_employees').css('color', '');
+      var page = $(this).data('page');
+      // add color placeholder
+      $(this).css('color', 'red');
+
+
+      // Chiamata ajax per i risultati successivi
+      getEmployees(page);
+    });
+  }
+
+  // Funzione per chiamata ajax risultati pagine companies
+  function getEmployees(page){
+
+    $.ajax({
+
+      url: '/employees',
+      data: {
+        'page': page
+      },
+      success: function(data){
+
+        // Insert rendering page
+        $('.card_employees').html(data);
+
+        // console.log("log di data ",data);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+
+  }
+
+</script>

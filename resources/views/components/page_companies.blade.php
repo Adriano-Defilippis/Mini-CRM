@@ -34,16 +34,19 @@
   function init(){
 
     console.log('holaaaa');
+    // Azione click su navigazione pagina
+    $(document).on('click','.nav_companies', function(e){
 
-    $(document).on('click','.nav_companies', function(){
-
-      // pulizia html
-      $('.table_companies').html('');
+      // remove color placeholder
+      $('.nav_companies').css('color', '');
       var page = $(this).data('page');
-      console.log('click', page);
+      // add color placeholder
+      $(this).css('color', 'red');
+
 
       // Chiamata ajax per i risultati successivi
       getCompanies(page);
+
     });
   }
 
@@ -59,7 +62,7 @@
       success: function(data){
 
         // Insert rendering page
-        $('.table_companies').html(data);
+        $('.card_companies').html(data);
 
         console.log("log di data ",data);
       },
