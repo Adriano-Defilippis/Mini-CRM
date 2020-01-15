@@ -41,6 +41,7 @@ class CompanyController extends Controller
 
     /**
      *SHOW NEXT 10 COMPANIES
+     *RETURN BLADE VIEW WHIT AJAX CALL
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -54,9 +55,19 @@ class CompanyController extends Controller
 
       $companies = Company::whereBetween('id', [$min, $max])->get();
 
-      return json_decode(
-        $companies
-      );
+      $list = [];
+
+
+
+      $html = view('components.page_companies', compact('companies'))
+          ->render();
+
+      $list[] = $html;
+
+      // return a JSON array of the companies list
+      return response()->json($list);
+
+
     }
 
     /**
