@@ -16,7 +16,12 @@ class LogoController extends Controller
 	 * @return \Illuminate\Contracts\Support\Renderable
 	 */
 	public function index($id) {
-		return view('components.form_logo', compact('id'));
+
+          $html = view('components.form_logo', compact('id'))
+              ->render();
+
+      return response()->json([$html]);
+		// return view('components.form_logo', compact('id'));
 	}
 
   /**
@@ -64,8 +69,8 @@ public function submit(Request $request, $id) {
   // Upload database logo path
   $company->update($validatedLogo);
 
-  // return response()->json($company)
   return redirect()->back();
+
 
 }
 

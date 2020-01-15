@@ -12,7 +12,11 @@
 
     @foreach ($companies as $company)
       <tr>
-        <th>{{$company -> name}}</th>
+        <th>
+          <a href="{{route('show.company', $company-> id)}}">
+            {{$company -> name}}
+          </a>
+        </th>
         <td>{{$company -> email}}</td>
         <td class="container_logo">
           <img class="logo" src="storage/{{$company -> logo}}" alt="{{$company -> logo}}">

@@ -1,4 +1,4 @@
-<form action="{{route('example.upload', $company -> id)}}" method="post" enctype="multipart/form-data">
+<form id="logoForm" action="{{route('example.upload', $company -> id)}}" method="post" enctype="multipart/form-data">
 	{{ csrf_field() }}
 
 	<input type="file" name="logo">
@@ -19,7 +19,9 @@
       success: function(data){
 
         console.log("data", data);
-        e.preventDefault();
+				// Insert rendering page
+        $('.card_companies').html(data);
+        // e.preventDefault();
       },
 
       error: function(err){
@@ -28,5 +30,6 @@
       }
     });
   });
+
 
 </script>
