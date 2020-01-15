@@ -11356,3 +11356,21 @@ a.text-dark:focus {
   }
 }
 
+.container_logo {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: baseline;
+          align-items: baseline;
+}
+
+.container_logo .logo {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.container_logo .logo_btn {
+  cursor: pointer;
+}
+

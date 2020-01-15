@@ -14,7 +14,10 @@
       <tr>
         <th>{{$company -> name}}</th>
         <td>{{$company -> email}}</td>
-        <td>{{$company -> logo}}</td>
+        <td class="container_logo">
+          <img class="logo" src="storage/{{$company -> logo}}" alt="{{$company -> logo}}">
+          <a href="{{route('index.upload', $company -> id)}}"><span class="logo_btn">modifica</span></a>
+        </td>
         <td>{{$company -> website}}</td>
         <td>
           <button type="button" class="btn btn-light">Edit</button>
