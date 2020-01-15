@@ -16,7 +16,7 @@
         <td>{{$company -> email}}</td>
         <td class="container_logo">
           <img class="logo" src="storage/{{$company -> logo}}" alt="{{$company -> logo}}">
-          <a href="{{route('index.upload', $company -> id)}}"><span class="logo_btn">modifica</span></a>
+          <span class="logo_btn" data-id={{$company -> id}}>modifica</span>
         </td>
         <td>{{$company -> website}}</td>
         <td>
@@ -51,6 +51,18 @@
       getCompanies(page);
 
     });
+
+    // Azione su click modifica immagine
+    $(document).on('click','.logo_btn', function(e){
+
+
+      // Chiamata ajax form immagine
+
+      var id = $(this).data('id');
+      var append = $(this).parent();
+      getFormImg(id, append);
+
+    });
   }
 
   // Funzione per chiamata ajax risultati pagine companies
@@ -77,4 +89,24 @@
 
   }
 
+  // Function for form image ajax
+  function getFormImg(id, append){
+
+    $.ajax({
+
+      url: '/form/' + id,
+      success: function(data){
+
+        // Insert rendering page
+        append.html(data);
+
+        console.log("log di data ",data);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+
+  }
 </script>

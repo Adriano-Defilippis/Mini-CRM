@@ -64,6 +64,9 @@ public function submit(Request $request, $id) {
   // Upload database logo path
   $company->update($validatedLogo);
 
+  // return response()->json($company)
+  return redirect()->back();
+
 }
 
 /**
