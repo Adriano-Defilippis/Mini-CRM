@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Company;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\CompanyRequest;
 
 class CompanyController extends Controller
 {
@@ -33,9 +36,18 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      $list = [];
+
+      $counter_employees = $request -> page;
+
+      $html = view('components.create_company', compact('counter_employees'))
+          ->render();
+
+
+      // return a JSON whit html
+      return response()->json($html);
     }
 
 
@@ -76,9 +88,40 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        //
+
+      $validatedCompany = [
+        'name' => $request-> name,
+        'email' => $request-> email,
+        'website' => $request-> website
+      ];
+
+      $file = $request -> file('logo');
+
+      // Upload file in storage folder
+      if ($file) {
+
+        $count_id = Company::count() + 1;
+        // Name for file
+        $targetFile = str_replace(" ", "_", $request-> name) . "_" . $count_id . ".jpg";
+
+        $targetPath = 'storage';
+
+        $file->move($targetPath, $targetFile);
+        // Assegno url con nome file da salvare nel database
+        $validatedCompany['logo']=$targetFile;
+        }
+
+
+
+
+        $new_company = Company::create($validatedCompany);
+
+        $page = 1;
+        // return response()->json($validatedCompany);
+        return redirect('/companies')->with('page', $page);
+
     }
 
     /**

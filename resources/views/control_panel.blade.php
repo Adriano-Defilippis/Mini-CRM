@@ -9,7 +9,7 @@
   </div>
   <div class="card-body">
 
-    <button type="button" class="btn btn-warning">Add Company</button>
+    <button id="add_comp_btn" type="button" class="btn btn-warning">Add Company</button>
 
     <div class="card">
       <div class="card-header">
@@ -69,6 +69,43 @@
   </div>
 </div>
 
+<script type="text/javascript">
+
+ $(document).ready(init);
+
+ function init(){
+
+   // variabile checked button
+   var checked = false;
+
+   // Azione click Add new COMPANY, mostra form
+   $(document).on('click', '#add_comp_btn', function(e){
+
+     checked =! checked;
+     // Pulizia div form create company
+     $('#add_comp_form').remove();
+     console.log(checked);
+     // if button is checked
+     if (checked) {
+       $.ajax({
+
+         url: '/createcompany',
+         success: function(data){
+
+           $('.tbody_companies').prepend(data);
+
+           console.log(data);
+         },
+         error: function(err){
+
+         }
+       });
+     }
+
+   });
+ }
+
+</script>
 
 
 @endsection

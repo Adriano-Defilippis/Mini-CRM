@@ -10,6 +10,7 @@
   </thead>
   <tbody class="tbody_companies">
 
+
     @foreach ($companies as $company)
       <tr>
         <th>
@@ -40,7 +41,6 @@
 
   function init(){
 
-    console.log('holaaaa');
     // Azione click su navigazione pagina
     $(document).on('click','.nav_companies', function(e){
 

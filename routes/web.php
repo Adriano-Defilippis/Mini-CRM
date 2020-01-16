@@ -10,6 +10,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 // Route for show cpompany detail and Employees list
 Route::get('/company/{id}', 'CompanyController@show')->name('show.company');
+// Route for create form company, whit ajax call
+Route::get('/createcompany', 'CompanyController@create')->name('create.company')->middleware('auth');
+// Route for storage company, whit ajax call
+Route::post('/storecompany', 'CompanyController@store')->name('store.company')->middleware('auth');
 // Route for ajax call companies list
 Route::get('/companies', 'CompanyController@showMore')->name('show_more_comp');
 // Route for ajax call employee list
