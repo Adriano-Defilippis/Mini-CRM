@@ -19,7 +19,7 @@
   </td>
 </tr>
 
-<script type="text/javascript">
+<script id="create_comp_script" type="text/javascript">
 
 
   $(document).ready(init);
@@ -27,6 +27,8 @@
   function init(){
 
     $(document).on('click', '#create_comp_btn', function(e){
+
+      // checked =! checked;
 
       var logo_data = $('#logo_file').get()[0].files[0];
       console.log(logo_data, 'logodata');
@@ -65,8 +67,7 @@
           setTimeout(function(){
 
             $('#add_comp_form').remove();
-            // Call function for redirect ajax page
-            console.log(page);
+
           }, 2000);
 
 

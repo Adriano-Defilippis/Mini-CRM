@@ -18,7 +18,7 @@
       <div class="card_companies card-body">
 
         {{-- Component for table body results --}}
-        @include('components.page_companies')
+        {{-- @include('components.page_companies') --}}
 
       </div>
 
@@ -51,7 +51,7 @@
       <div class="card_employees card-body">
 
         {{-- Component for table body results --}}
-        @include('components.page_employee')
+        {{-- @include('components.page_employee') --}}
 
       </div>
 
@@ -75,6 +75,26 @@
 
  function init(){
 
+
+   // Chiamata ajax per primi 10 risultati
+   getCompanies(1);
+   // Azione click su navigazione pagina
+   $(document).on('click','.nav_companies', function(e){
+
+     // remove color placeholder
+     $('.nav_companies').css('color', '');
+     var page = $(this).data('page');
+     // add color placeholder
+     $(this).css('color', 'red');
+
+
+     // Chiamata ajax per i risultati successivi
+     getCompanies(page);
+
+   });
+
+
+
    // variabile checked button
    var checked = false;
 
@@ -82,28 +102,60 @@
    $(document).on('click', '#add_comp_btn', function(e){
 
      checked =! checked;
-     // Pulizia div form create company
-     $('#add_comp_form').remove();
-     console.log(checked);
-     // if button is checked
-     if (checked) {
-       $.ajax({
-
-         url: '/createcompany',
-         success: function(data){
-
-           $('.tbody_companies').prepend(data);
-
-           console.log(data);
-         },
-         error: function(err){
-
-         }
-       });
-     }
-
+     showFormCreate(checked);
    });
+
+
  }
+
+  // Mostra/nascondi Form creazione Company
+  function showFormCreate(checked){
+
+    // Pulizia div form create company
+    $('#add_comp_form').remove();
+    $('#create_comp_script').remove();
+    console.log(checked);
+    // if button is checked
+    if (checked) {
+      $.ajax({
+
+        url: '/createcompany',
+        success: function(data){
+
+          $('.tbody_companies').prepend(data);
+
+          console.log(data);
+        },
+        error: function(err){
+
+        }
+      });
+    }
+  }
+
+  // Funzione per chiamata ajax risultati pagine companies
+  function getCompanies(page){
+
+    $.ajax({
+
+      url: '/companies',
+      data: {
+        'page': page
+      },
+      success: function(data){
+
+        // Insert rendering page
+        $('.card_companies').html(data);
+
+        // console.log("log di data ",data);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+
+  }
 
 </script>
 

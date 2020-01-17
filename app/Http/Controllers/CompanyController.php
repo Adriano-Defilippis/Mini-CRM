@@ -119,8 +119,7 @@ class CompanyController extends Controller
         $new_company = Company::create($validatedCompany);
 
         $page = 1;
-        // return response()->json($validatedCompany);
-        return redirect('/companies')->with('page', $page);
+        return response()->json($validatedCompany);
 
     }
 

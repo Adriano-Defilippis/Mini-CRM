@@ -41,20 +41,6 @@
 
   function init(){
 
-    // Azione click su navigazione pagina
-    $(document).on('click','.nav_companies', function(e){
-
-      // remove color placeholder
-      $('.nav_companies').css('color', '');
-      var page = $(this).data('page');
-      // add color placeholder
-      $(this).css('color', 'red');
-
-
-      // Chiamata ajax per i risultati successivi
-      getCompanies(page);
-
-    });
 
     // Azione su click modifica immagine
     $(document).on('click','.logo_btn', function(e){
@@ -69,30 +55,7 @@
     });
   }
 
-  // Funzione per chiamata ajax risultati pagine companies
-  function getCompanies(page){
-
-    $.ajax({
-
-      url: '/companies',
-      data: {
-        'page': page
-      },
-      success: function(data){
-
-        // Insert rendering page
-        $('.card_companies').html(data);
-
-        console.log("log di data ",data);
-      },
-
-      error: function(error){
-        console.log("error",error);
-      }
-    });
-
-  }
-
+  
   // Function for form image ajax
   function getFormImg(id, append){
 
