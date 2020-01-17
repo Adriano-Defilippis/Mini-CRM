@@ -3,7 +3,7 @@
   <th>
     <input type="text" name="name" placeholder="Insert name of a Company" value="">
     {{-- TODO inserire messaggi di errore validazione campi --}}
-    {{$counter_employees}}
+
   </th>
   <td>
     <input type="text" name="email" placeholder="Insert Comapany Email" value="">
@@ -68,6 +68,8 @@
 
             $('#add_comp_form').remove();
 
+            // Chiamata ajax per visualizzare pagina compagnia appena creata
+            getCompanies($('.nav_employees').length);
           }, 2000);
 
 

@@ -75,7 +75,7 @@
 
  function init(){
 
-
+   var page;
    // Chiamata ajax per primi 10 risultati
    getCompanies(1);
    // Azione click su navigazione pagina
@@ -83,7 +83,7 @@
 
      // remove color placeholder
      $('.nav_companies').css('color', '');
-     var page = $(this).data('page');
+     page = $(this).data('page');
      // add color placeholder
      $(this).css('color', 'red');
 
@@ -102,14 +102,14 @@
    $(document).on('click', '#add_comp_btn', function(e){
 
      checked =! checked;
-     showFormCreate(checked);
+     showFormCreate(checked, page);
    });
 
 
  }
 
   // Mostra/nascondi Form creazione Company
-  function showFormCreate(checked){
+  function showFormCreate(checked, page){
 
     // Pulizia div form create company
     $('#add_comp_form').remove();
@@ -123,8 +123,9 @@
         success: function(data){
 
           $('.tbody_companies').prepend(data);
-
+          
           console.log(data);
+
         },
         error: function(err){
 
