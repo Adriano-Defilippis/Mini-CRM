@@ -1,35 +1,14 @@
-<form id="logoForm" action="{{route('example.upload', $company -> id)}}" method="post" enctype="multipart/form-data">
+<form id="logoForm" action="" method="post" enctype="multipart/form-data">
 	{{ csrf_field() }}
 
-	<input type="file" name="logo">
-	<input data-id="{{$company -> id}}" type="submit" value="go">
+	<input id="update_logo" data-page=""  type="file" name="logo">
+	<input class="update_logo_btn" data-id="{{$company -> id}}" type="button" value="go">
 
 </form>
 
 <script type="text/javascript">
 
-  $(document).on('click', 'input[type="submit"]', function(e){
 
-
-    var id = $(this).data('id');
-    console.log('click', $(this), id);
-    $.ajax({
-
-      url: '/upload/' + id,
-      success: function(data){
-
-        console.log("data", data);
-				// Insert rendering page
-        $('.card_companies').html(data);
-        // e.preventDefault();
-      },
-
-      error: function(err){
-
-        console.log(err, 'error');
-      }
-    });
-  });
 
 
 </script>

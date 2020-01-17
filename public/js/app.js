@@ -37084,6 +37084,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(init);
+var token = jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content');
 
 /***/ }),
 

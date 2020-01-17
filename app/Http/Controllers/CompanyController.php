@@ -62,16 +62,22 @@ class CompanyController extends Controller
     {
 
       $page = $request -> page;
-      $max = $page * 10;
-      $min = $max - 9;
 
-      $companies = Company::whereBetween('id', [$min, $max])->get();
+      $max = $page * 10;
+      $skip = $max - 10;
+
+      if ($page == 1) {
+
+        $skip = 0;
+      }
+
+      // TODO contare le righe della tabella anziche gli id
+      $companies = Company::skip($skip)->take(10)->get();
+      $count_companies = Company::count();
 
       $list = [];
 
-
-
-      $html = view('components.page_companies', compact('companies'))
+      $html = view('components.page_companies', compact('companies', 'count_companies', 'page'))
           ->render();
 
       $list[] = $html;
@@ -118,11 +124,42 @@ class CompanyController extends Controller
 
         $new_company = Company::create($validatedCompany);
 
-        $page = 1;
-        return response()->json($validatedCompany);
+        $last_page = Company::count();
+        // $page = $count_companies % 10;
+        //
+        $list = [];
+        $list[] = $validatedCompany;
+        $list[] = $last_page;
+
+
+        return response()->json($list);
 
     }
 
+    /**
+     * Function to refresh last results
+     *
+     */
+
+     public function lastResult(){
+
+       $count_companies = Company::count();
+
+       $skip = $count_companies % 10;
+       $take = $count_companies - $skip;
+
+       $companies = Company::skip($skip)->take($take)->get();
+
+       $list = [];
+
+       $html = view('components.page_companies', compact('companies', 'count_companies'))
+           ->render();
+
+       $list[] = $html;
+
+       // return a JSON array of the companies list
+       return response()->json($list);
+     }
     /**
      * Display the specified resource.
      *
@@ -167,6 +204,20 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $company = Company::findOrFail($id);
+      $employees = $company -> employees;
+
+      if ($employees) {
+        $employees->each(function($employee){
+
+          $employee -> delete();
+        });
+      }
+
+      $company-> delete();
+
+      dd($id, $company, $employees);
+      // return a JSON array of the companies list
+      // return response()->json($company);
     }
 }

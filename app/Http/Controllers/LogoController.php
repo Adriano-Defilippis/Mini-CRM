@@ -15,12 +15,14 @@ class LogoController extends Controller
    * @return \Illuminate\Http\Response
 	 * @return \Illuminate\Contracts\Support\Renderable
 	 */
-	public function index($id) {
+	public function index(Request $request, $id) {
 
-          $html = view('components.form_logo', compact('id'))
-              ->render();
+		$page= $request -> page;
 
-      return response()->json([$html]);
+    $html = view('components.form_logo', compact('id', 'page'))
+        ->render();
+
+    return response()->json([$html]);
 		// return view('components.form_logo', compact('id'));
 	}
 
