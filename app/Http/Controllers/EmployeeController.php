@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-Use App\Employee;
+use App\Company;
+use App\Employee;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\CompanyRequest;
+use App\Http\Requests\EmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -48,17 +53,26 @@ class EmployeeController extends Controller
     public function showMore(Request $request)
     {
 
-      $page = $request -> page;
-      $max = $page * 10;
-      $min = $max - 9;
+      // $page = $request -> page;
 
-      $employees = Employee::whereBetween('id', [$min, $max])->get();
+      // $max = $page * 10;
+      // $skip = $max - 10;
+      //
+      // if ($page == 1) {
+      //
+      //   $skip = 0;
+      // }
 
+      $employees = Employee::orderBy('first_name')
+            ->paginate(10);
+
+      // $employees = Employee::skip($skip)->take(10)->get();
+      $count_employees = Employee::count();
       $list = [];
 
 
 
-      $html = view('components.page_employee', compact('employees'))
+      $html = view('components.page_employee', compact('employees', 'count_employees'))
           ->render();
 
       $list[] = $html;
@@ -122,6 +136,10 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+
+        $employee -> delete();
+
+        return response()->json(); 
     }
 }

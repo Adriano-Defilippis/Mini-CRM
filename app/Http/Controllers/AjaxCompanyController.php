@@ -51,26 +51,7 @@ class AjaxCompanyController extends Controller
      */
     public function refreshAfterDelete(Request $request)
     {
-        $page = $request -> page;
 
-
-        $max = $page * 10;
-        $skip = $max - 10;
-
-        if ($page == 1) {
-
-          $skip = 0;
-        }
-
-        // TODO contare le righe della tabella anziche gli id
-        $companies = Company::skip($skip)->take(10)->get();
-        $count_companies = Company::count();
-
-        $html = view('components.page_companies', compact('companies', 'count_companies', 'page'))
-            ->render();
-
-        // return a JSON array of the companies list
-        return response()->json($html);
     }
 
     /**
@@ -111,17 +92,7 @@ class AjaxCompanyController extends Controller
     public function update(CompanyRequest $request, $id)
     {
 
-        // Retrieve the validated input data...
-        $validatedData = $request->validated();
-
-        $company_to_update = Company::findOrFail($id);
-
-        $company_to_update -> update($validatedData);
-
-        return response()->json();
-
-
-
+      
 
     }
 

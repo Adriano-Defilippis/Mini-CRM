@@ -63,17 +63,19 @@ class CompanyController extends Controller
     {
 
       $page = $request -> page;
+      //
+      // $max = $page * 10;
+      // $skip = $max - 10;
+      //
+      // if ($page == 1) {
+      //
+      //   $skip = 0;
+      // }
 
-      $max = $page * 10;
-      $skip = $max - 10;
+      $companies = Company::orderBy('name')
+            ->paginate(10);
 
-      if ($page == 1) {
-
-        $skip = 0;
-      }
-
-
-      $companies = Company::skip($skip)->take(10)->get();
+      // $companies = Company::skip($skip)->take(10)->get();
       $count_companies = Company::count();
 
       $list = [];
@@ -196,9 +198,16 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
-        //
+      // Retrieve the validated input data...
+      $validatedData = $request->validated();
+
+      $company_to_update = Company::findOrFail($id);
+
+      $company_to_update -> update($validatedData);
+
+      return response()->json();
     }
 
     /**

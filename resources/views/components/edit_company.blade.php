@@ -20,16 +20,3 @@
   <button id="this_btn" data-id="{{$company-> id}}" type="button" class="btn btn-light">edit</button>
   <button class="back_btn" type="button" name="button">Back</button>
 </td>
-
-
-<script id="" type="text/javascript">
-
-
-  $(document).ready(init);
-
-  function init(){
-
-    console.log('olaaa init');
-  }
-
-</script>
