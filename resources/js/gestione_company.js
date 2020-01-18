@@ -122,10 +122,9 @@ console.log('gestione_company.js');
    // Azione Edit Company
    $(document).on('click', '.btn_edit_comp', function(e){
 
-     var id_to_edit = $(this).data('id');
-     var table_row = $(this);
+     var id_to_edit = $(this).data('id');   
 
-     editCompany(id_to_edit, table_row);
+     editCompany(id_to_edit);
    });
 
 
@@ -153,7 +152,7 @@ console.log('gestione_company.js');
 
 
    // Mostra nascondi EditForm Company
-  function editCompany(id, table_row){
+  function editCompany(id){
 
     $.ajax({
 
@@ -207,7 +206,7 @@ console.log('gestione_company.js');
 
       success: function(results){
 
-        myThis.getCompanies(page);
+        getCompanies(page);
         console.log(results);
       },
       error: function(err, responseText, tipo, altro, edancora){

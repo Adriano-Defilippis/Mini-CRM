@@ -37230,8 +37230,7 @@ $(document).on('click', '.btn_delete_comp', function (e) {
 
 $(document).on('click', '.btn_edit_comp', function (e) {
   var id_to_edit = $(this).data('id');
-  var table_row = $(this);
-  editCompany(id_to_edit, table_row);
+  editCompany(id_to_edit);
 }); // Azione invio update Company
 
 $(document).on('click', '#this_btn', function (e) {
@@ -37248,7 +37247,7 @@ $(document).on('click', '.update_logo_btn', function (e) {
   updateLogo(id, page, e);
 }); // Mostra nascondi EditForm Company
 
-function editCompany(id, table_row) {
+function editCompany(id) {
   $.ajax({
     url: '/company/edit/' + id,
     success: function success(results) {
@@ -37289,7 +37288,7 @@ function updateCompany(target_id, page) {
       }
     },
     success: function success(results) {
-      myThis.getCompanies(page);
+      getCompanies(page);
       console.log(results);
     },
     error: function error(err, responseText, tipo, altro, edancora) {
@@ -37436,6 +37435,15 @@ $(document).on('click', '.nav_employees', function () {
 $(document).on('click', '.btn_delete_empl', function (e) {
   var id = $(this).data('id');
   destroyEmployee(id, page_emp);
+}); // Azione Edit Employee
+
+$(document).on('click', '.btn_edit_empl', function (e) {
+  var id_to_edit = $(this).data('id');
+  editEmployee(id_to_edit);
+}); // Azione tasto back_btn
+
+$(document).on('click', '.back_btn_emp', function (e) {
+  getEmployees(page_emp);
 }); // Funzione per chiamata ajax risultati pagine companies
 
 function getEmployees(page) {
@@ -37474,6 +37482,24 @@ function destroyEmployee(target_id, page) {
     success: function success(results) {
       getEmployees(page);
       console.log('success', results);
+    },
+    error: function error(err) {
+      console.log(err);
+    }
+  });
+} // Function to get Edit Form Ajax CALL
+
+
+function editEmployee(target_id) {
+  $.ajax({
+    url: '/employee/edit/' + target_id,
+    success: function success(results) {
+      $('.t_row_emp').each(function (key, value) {
+        if ($(this).data('id') == target_id) {
+          $(this).html(results);
+        }
+      });
+      console.log('edit ajax company', results);
     },
     error: function error(err) {
       console.log(err);

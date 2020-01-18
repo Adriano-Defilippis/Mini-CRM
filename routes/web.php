@@ -28,6 +28,9 @@ Route::get('/lastcompany', 'CompanyController@lastResult')->name('last.result');
 Route::get('/employees', 'EmployeeController@showMore')->name('show_more_empl');
 // Route for delete company, whit ajax call
 Route::get('/employee/delete/{id}', 'EmployeeController@destroy')->name('delete.employee');
+// Route for delete company, whit ajax call
+Route::get('/employee/edit/{id}', 'EmployeeController@edit')->name('edit.employee');
+
 
 // Route for uploader image
 Route::post('/form/{id}', 'LogoController@show')->name('index.upload');

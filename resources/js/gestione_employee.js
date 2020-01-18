@@ -19,6 +19,19 @@ $(document).on('click', '.btn_delete_empl', function(e){
 
 });
 
+// Azione Edit Employee
+$(document).on('click', '.btn_edit_empl', function(e){
+
+  var id_to_edit = $(this).data('id');
+
+  editEmployee(id_to_edit);
+});
+
+// Azione tasto back_btn
+$(document).on('click', '.back_btn_emp', function(e){
+
+  getEmployees(page_emp);
+});
 
 // Funzione per chiamata ajax risultati pagine companies
 function getEmployees(page){
@@ -75,4 +88,28 @@ function destroyEmployee(target_id, page){
     }
   });
 
+}
+
+// Function to get Edit Form Ajax CALL
+function editEmployee(target_id){
+
+  $.ajax({
+
+    url: '/employee/edit/' + target_id,
+    success: function(results){
+
+
+      $('.t_row_emp').each(function(key, value){
+
+        if ($(this).data('id') == target_id) {
+
+          $(this).html(results);
+        }
+      });
+      console.log('edit ajax company', results);
+    },
+    error: function(err){
+      console.log(err);
+    }
+  });
 }

@@ -113,7 +113,13 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        //
+      $employee = Employee::findOrFail($id);
+      $companies = Company::orderBy('name')->get();
+
+      $html = view('components.edit_employee', compact('employee', 'companies'))
+          ->render();
+      // return a JSON array of the companies list
+      return response()->json($html);
     }
 
     /**
@@ -140,6 +146,6 @@ class EmployeeController extends Controller
 
         $employee -> delete();
 
-        return response()->json(); 
+        return response()->json();
     }
 }
