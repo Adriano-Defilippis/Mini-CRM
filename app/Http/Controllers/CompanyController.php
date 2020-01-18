@@ -72,7 +72,7 @@ class CompanyController extends Controller
         $skip = 0;
       }
 
-      
+
       $companies = Company::skip($skip)->take(10)->get();
       $count_companies = Company::count();
 
@@ -84,7 +84,7 @@ class CompanyController extends Controller
       $list[] = $html;
 
       // return a JSON array of the companies list
-      return response()->json($list);
+      return response()->json($html);
 
 
     }

@@ -105,8 +105,11 @@
 
    });
 
+   // Azione tasto back
+   $(document).on('click', '.back_btn', function(e){
 
-
+      getCompanies(page);
+   });
    // variabile checked button
    var checked = false;
 
@@ -186,8 +189,28 @@
 
      var id = $(this).data('id');
      console.log(id);
-     destroyCompany(id);
-     refreshDelete(page);
+     destroyCompany(id, page);
+     // refreshDelete(page);
+   });
+
+   // Azione Edit Company
+   $(document).on('click', '.btn_edit_comp', function(e){
+
+     var id_to_edit = $(this).data('id');
+     var table_row = $(this);
+
+     editCompany(id_to_edit, table_row);
+   });
+
+
+
+   // Azione invio update Company
+   $(document).on('click', '#this_btn', function(e){
+
+     var id_toDelete = $(this).data('id');
+
+
+     updateCompany(id_toDelete, page);
    });
 
    // Azione submit invio form update logo
@@ -203,7 +226,54 @@
 
  }
 
+   // Mostra nascondi EditForm Company
+  function editCompany(id, table_row){
 
+    $.ajax({
+
+      url: '/company/edit/' + id,
+      success: function(results){
+
+
+        $('.t_row').each(function(key, value){
+
+          if ($(this).data('id') == id) {
+
+            $(this).html(results);
+          }
+        });
+        console.log('edit ajax company', results);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
+  }
+
+  // Function update Company ajax call
+
+  function updateCompany(id_delete, page){
+
+    var myThis = this;
+
+    $.ajax({
+
+      url: '/company/update/' + id_delete,
+      data: {
+        "_token": "{{ csrf_token() }}",
+          id: id_delete
+      },
+      success: function(results){
+
+        myThis.getCompanies(page);
+        console.log(results);
+      },
+      error: function(err){
+        console.log(err);
+      }
+
+    });
+  }
 
   // Mostra/nascondi Form creazione Company
   function showFormCreate(checked, page){
@@ -234,37 +304,6 @@
     }
   }
 
-  // Function ajax call to Destroy Company
-  function destroyCompany(target_id){
-    console.log('click', target_id);
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $.ajax({
-
-      url: '/company/delete/' + target_id,
-      type: "GET",
-      dataType: "JSON",
-      // data: {
-      //   'id': target_id
-      // },
-      // data: myFormData,
-      succes: function(data){
-
-
-        console.log('success', data);
-      },
-      error: function(err){
-        console.log(err);
-      }
-    });
-
-  }
-
   // Funzione Ajax Refresh result after delete
   function refreshDelete(myPage){
     // console.log('refresh delete');
@@ -287,6 +326,32 @@
       }
     });
   }
+
+
+  // Function ajax call to Destroy Company
+  function destroyCompany(target_id, page){
+
+    var myThis = this;
+
+    $.ajax({
+
+      url: '/company/delete/' + target_id,
+      data: {
+        "_token": "{{ csrf_token() }}",
+          id: target_id
+      },
+      success: function(results){
+
+        myThis.refreshDelete(page);
+        console.log('success', results);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
+
+  }
+
   // Funzione per chiamata ajax risultati pagine companies
   function getCompanies(page){
 
@@ -299,7 +364,7 @@
       success: function(data){
 
         // Insert rendering page
-        $('.card_companies').html(data[0]);
+        $('.card_companies').html(data);
 
         console.log("log di get company ",data);
       },

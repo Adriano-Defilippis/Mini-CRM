@@ -12,7 +12,7 @@
 
 
     @foreach ($companies as $company)
-      <tr>
+      <tr class="t_row" data-id="{{$company -> id}}">
         <th>
           <a href="{{route('show.company', $company-> id)}}">
             {{$company -> name}}
@@ -28,6 +28,8 @@
           <button type="button" class="btn_edit_comp btn btn-light" data-id="{{$company -> id}}">Edit</button>
           <button type="button" class="btn_delete_comp btn btn-danger" data-id="{{$company -> id}}">Delete</button>
           <a href="{{route('delete.company', $company -> id)}}">delete</a>
+          <a href="{{route('edit.company', $company -> id)}}">edit</a>
+
         </td>
       </tr>
     @endforeach

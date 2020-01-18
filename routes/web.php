@@ -14,6 +14,10 @@ Route::get('/company/{id}', 'CompanyController@show')->name('show.company');
 Route::get('/createcompany', 'CompanyController@create')->name('create.company')->middleware('auth');
 // Route for storage company, whit ajax call
 Route::post('/storecompany', 'CompanyController@store')->name('store.company')->middleware('auth');
+// Route for edit company, whit ajax call
+Route::get('/company/edit/{id}', 'AjaxCompanyController@edit')->name('edit.company');
+// Route for update company, whit ajax call
+Route::get('/company/update/{id}', 'AjaxCompanyController@update')->name('update.company');
 // Route for delete company, whit ajax call
 Route::get('/company/delete/{id}', 'CompanyController@destroy')->name('delete.company');
 // Route for refresh result after delete, whit ajax call

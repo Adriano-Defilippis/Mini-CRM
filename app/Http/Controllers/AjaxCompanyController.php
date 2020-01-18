@@ -92,7 +92,13 @@ class AjaxCompanyController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $company = Company::findOrFail($id);
+
+        $html = view('components.edit_company', compact('company'))
+            ->render();
+        // return a JSON array of the companies list
+        return response()->json($html);
     }
 
     /**
@@ -104,7 +110,11 @@ class AjaxCompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $list = [];
+        $list[] = $id;
+        $list[] = $request -> id;
+        return response()->json($list);
     }
 
     /**
