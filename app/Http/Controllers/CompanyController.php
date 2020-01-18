@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Company;
+use App\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CompanyRequest;
@@ -71,7 +72,7 @@ class CompanyController extends Controller
         $skip = 0;
       }
 
-      // TODO contare le righe della tabella anziche gli id
+      
       $companies = Company::skip($skip)->take(10)->get();
       $count_companies = Company::count();
 
@@ -205,6 +206,7 @@ class CompanyController extends Controller
     public function destroy($id)
     {
       $company = Company::findOrFail($id);
+
       $employees = $company -> employees;
 
       if ($employees) {
@@ -216,8 +218,7 @@ class CompanyController extends Controller
 
       $company-> delete();
 
-      dd($id, $company, $employees);
-      // return a JSON array of the companies list
-      // return response()->json($company);
+      return response()->json();
+
     }
 }

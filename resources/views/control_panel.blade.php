@@ -18,9 +18,18 @@
       <div class="card_companies card-body">
 
         {{-- Component for table body results --}}
-        {{-- @include('components.page_companies') --}}
 
       </div>
+
+      {{-- Navigatore risultati --}}
+      <p>
+        @php
+          $counter_companies = 1;
+        @endphp
+        @for ($i=1; $i <= $count_companies; $i+= 10)
+           <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        @endfor
+      </p>
 
 
     </div>
@@ -66,7 +75,16 @@
  $(document).ready(init);
 
  function init(){
+   // Aggiungo colore stile segnaposto prima pagina
+   $('.nav_companies').each(function(key, item){
 
+     if ($(this).text() == 1) {
+
+       $(this).css('color', 'red');
+     }
+
+     console.log('page', key, item, $(this).text());
+   })
    var page = 1;
    // Chiamata ajax per primi 10 risultati
    getCompanies(page);
@@ -167,10 +185,9 @@
    $(document).on('click', '.btn_delete_comp', function(e){
 
      var id = $(this).data('id');
-
+     console.log(id);
      destroyCompany(id);
-     // Richiamo pagina risultati attiva
-     getCompanies(page)
+     refreshDelete(page);
    });
 
    // Azione submit invio form update logo
@@ -219,11 +236,7 @@
 
   // Function ajax call to Destroy Company
   function destroyCompany(target_id){
-    console.log('click');
-    // Form data JS Object
-    // var myFormData = new FormData();
-    // myFormData.append( '_token', "{{ csrf_token() }}");
-    // myFormData.append('id', target_id);
+    console.log('click', target_id);
 
     $.ajaxSetup({
         headers: {
@@ -236,14 +249,14 @@
       url: '/company/delete/' + target_id,
       type: "GET",
       dataType: "JSON",
-      data: {
-        'id': target_id
-      },
+      // data: {
+      //   'id': target_id
+      // },
       // data: myFormData,
       succes: function(data){
 
+
         console.log('success', data);
-        console.log('holaaaa', target_id);
       },
       error: function(err){
         console.log(err);
@@ -252,7 +265,28 @@
 
   }
 
+  // Funzione Ajax Refresh result after delete
+  function refreshDelete(myPage){
+    // console.log('refresh delete');
+    $.ajax({
 
+      url: '/companyrefresh',
+      data: {
+        'page': myPage
+      },
+      success: function(results){
+
+        // Insert rendering page
+        $('.card_companies').html(results);
+
+        console.log("log refresh delete ",results);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+  }
   // Funzione per chiamata ajax risultati pagine companies
   function getCompanies(page){
 

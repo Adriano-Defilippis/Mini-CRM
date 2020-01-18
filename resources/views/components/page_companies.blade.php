@@ -34,15 +34,7 @@
   </tbody>
 </table>
 
-{{-- Navigatore risultati --}}
-<p>
-  @php
-    $counter_companies = 1;
-  @endphp
-  @for ($i=1; $i <= $count_companies; $i+= 10)
-     <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
-  @endfor
-</p>
+
 
 <script type="text/javascript">
 
@@ -66,7 +58,7 @@
 
     });
 
-    
+
   }
 
 
