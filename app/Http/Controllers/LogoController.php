@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \FileUploader;
 use App\Company;
+use App\Http\Requests\CompanyRequest;
+use App\Http\Requests\LogoRequest;
 
 class LogoController extends Controller
 {
@@ -42,7 +44,9 @@ class LogoController extends Controller
  *
  * @return void
  */
-public function submit(Request $request, $id) {
+public function submit(LogoRequest $request, $id) {
+
+	// $validatedLogo = $request -> validate();
 
   // Search item to upload image
   $company = Company::findOrFail($id);
@@ -52,9 +56,11 @@ public function submit(Request $request, $id) {
 
 
   // FileUpload
-  $validatedLogo = $request ->validate([
-    'logo' => 'required'
-  ]);
+	// $validatedLogo = $request -> validate([
+	// 	'logo' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:4048'
+	// ]);
+
+	$validatedLogo = $request -> validate(['logo']);
 
   $file = $request -> file('logo');
 
@@ -64,14 +70,17 @@ public function submit(Request $request, $id) {
       $targetPath = 'storage';
 
       $file->move($targetPath, $targetFile);
-        $validatedLogo['logo']=$targetFile;
+
+			$validatedLogo = [
+				'logo' => $targetFile
+			];
     }
 
 
   // Upload database logo path
   $company->update($validatedLogo);
 
-  return redirect()->back();
+  return response()->json();
 
 
 }

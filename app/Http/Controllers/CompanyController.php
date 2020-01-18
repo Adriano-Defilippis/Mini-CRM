@@ -98,6 +98,10 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
 
+      $validatedLogo = $request -> validate([
+        'logo'
+      ]);
+
       $validatedCompany = [
         'name' => $request-> name,
         'email' => $request-> email,

@@ -1,7 +1,10 @@
 <th>
   <input type="text" name="name" value="{{$company -> name}}">
   {{-- TODO inserire messaggi di errore validazione campi --}}
+  @foreach ($errors as $key => $value)
+    {{$key}} {{$value}}
 
+  @endforeach
 </th>
 <td>
   <input type="text" name="email" value="{{$company-> email}}">

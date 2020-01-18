@@ -4,7 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyRequest extends FormRequest
+
+class LogoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,20 +25,18 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|string|max:50',
-          'email' => 'required|email|unique:users',
-          'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif,svg|max:4048',
-          'website' => 'nullable|string|max:75'
+              'logo' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:4048'
         ];
     }
-
 
     // Messaggio di ritorno in caso di errore
     public function messages()
    {
        return [
-           'email.required' => 'Email is required!',
-           'name.required' => 'Name is required!'
+           'logo.required' => 'No item selected',
+           'logo.image' => 'Logo must be an image file',
+           'logo.mimes' => 'Image format supported: jpeg.jpg,png, giv,svg',
+           'logo.max' => 'Max size: 40,48 MB'
        ];
    }
 }

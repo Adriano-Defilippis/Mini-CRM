@@ -21,17 +21,6 @@
 
       </div>
 
-      {{-- Navigatore risultati --}}
-      <p>
-        @php
-          $counter_companies = 1;
-        @endphp
-        @for ($i=1; $i <= $count_companies; $i+= 10)
-           <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
-        @endfor
-      </p>
-
-
     </div>
   </div>
 </div>
@@ -75,17 +64,10 @@
  $(document).ready(init);
 
  function init(){
-   // Aggiungo colore stile segnaposto prima pagina
-   $('.nav_companies').each(function(key, item){
-
-     if ($(this).text() == 1) {
-
-       $(this).css('color', 'red');
-     }
-
-     console.log('page', key, item, $(this).text());
-   })
    var page = 1;
+
+
+
    // Chiamata ajax per primi 10 risultati
    getCompanies(page);
 
@@ -99,9 +81,9 @@
      // add color placeholder
      $(this).css('color', 'red');
 
-
      // Chiamata ajax per i risultati successivi
      getCompanies(page);
+
 
    });
 
@@ -177,8 +159,14 @@
 
        },
 
-       error: function(error){
-         console.log("error",error);
+       error: function(err){
+
+         var message_errors = err.responseJSON.errors;
+
+         // Funzione stampa errori in pagina
+         errorMessageForm(message_errors);
+
+         console.log("error",err);
        }
      });
 
@@ -252,23 +240,45 @@
 
   // Function update Company ajax call
 
-  function updateCompany(id_delete, page){
+  function updateCompany(target_id, page){
 
     var myThis = this;
+    var thisName = $('input[name="name"]').val();
+    var thisEmail = $('input[name="email"]').val();
+    var thisLogo =  $('input[name="logo"]').val();
+    var thisWebsite = $('input[name="website"]').val();
+    console.log($('input[name="name"]').val());
 
     $.ajax({
 
-      url: '/company/update/' + id_delete,
+      url: '/company/update/' + target_id,
       data: {
         "_token": "{{ csrf_token() }}",
-          id: id_delete
+          id: target_id,
+          name: thisName,
+          email: thisEmail,
+          logo: thisLogo,
+          website:thisWebsite
       },
+
+      config: {
+         headers: {
+             'Content-Type': 'multipart/form-data'
+         }
+      },
+
       success: function(results){
 
         myThis.getCompanies(page);
         console.log(results);
       },
-      error: function(err){
+      error: function(err, responseText, tipo, altro, edancora){
+
+        var message_errors = err.responseJSON.errors;
+
+        // Funzione stampa errori in pagina
+        errorMessageForm(message_errors);
+
         console.log(err);
       }
 
@@ -366,6 +376,16 @@
         // Insert rendering page
         $('.card_companies').html(data);
 
+        // Aggiungo colore stile segnaposto pagina
+        $('.nav_companies').each(function(key, item){
+
+          if ($(this).text() == page) {
+
+            $(this).css('color', 'red');
+          }
+          // console.log('page', key, item, $(this).text());
+        });
+
         console.log("log di get company ",data);
       },
 
@@ -407,14 +427,34 @@
 
         error: function(err){
 
+          var message_errors = err.responseJSON.errors;
+          errorMessageForm(message_errors);
           console.log(err, 'error');
         }
       });
 
   }
 
+  // Funzione gestione errori request form
+  function errorMessageForm(obj){
 
+    for (const property in obj) {
 
+      var mess_arr = obj[property];
+      var str = '<div>';
+
+      for (var i = 0; i < mess_arr.length; i++) {
+
+        str += '<p class="font-weight-bold">' + mess_arr[i] + '</p>';
+
+        $('input[name='+ property +']').parent().addClass('border border-danger');
+      }
+
+      str += '</div>';
+      $('input[name='+ property +']').parent().append(str);
+
+    }
+  }
 </script>
 
 

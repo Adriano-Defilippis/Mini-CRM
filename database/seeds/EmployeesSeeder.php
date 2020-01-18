@@ -13,7 +13,7 @@ class EmployeesSeeder extends Seeder
      */
     public function run()
     {
-        factory(Employee::class, 50)->make()
+        factory(Employee::class, 400)->make()
 
           ->each(function($employee){
 

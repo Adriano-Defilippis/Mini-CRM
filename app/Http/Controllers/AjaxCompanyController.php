@@ -108,13 +108,21 @@ class AjaxCompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
 
-        $list = [];
-        $list[] = $id;
-        $list[] = $request -> id;
-        return response()->json($list);
+        // Retrieve the validated input data...
+        $validatedData = $request->validated();
+
+        $company_to_update = Company::findOrFail($id);
+
+        $company_to_update -> update($validatedData);
+
+        return response()->json();
+
+
+
+
     }
 
     /**
