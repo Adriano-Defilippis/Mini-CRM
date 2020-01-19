@@ -20,7 +20,7 @@
         </th>
         <td>{{$company -> email}}</td>
         <td data-page="{{$page}}" class="container_logo">
-          <img class="logo" src="storage/{{$company -> logo}}" alt="{{$company -> logo}}">
+          <img class="logo" src="storage/{{$company -> logo}}" alt="">
           <span class="logo_btn" data-page="{{$page}}" data-id={{$company -> id}}>modifica</span>
         </td>
         <td>{{$company -> website}}</td>

@@ -51,9 +51,9 @@ console.log('gestione_company.js');
      // Form data JS Object
      var formData = new FormData();
      formData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
-     formData.append('name', $('input[name="name"]').val());
-     formData.append('email', $('input[name="email"]').val());
-     formData.append('website', $('input[name="website"]').val());
+     formData.append('name', $('tr[data-id="' + target_id +'"] th input[name="name"]').val());
+     formData.append('email', $('tr[data-id="' + target_id +'"] td input[name="email"]').val());
+     formData.append('website', $('tr[data-id="' + target_id +'"] td input[name="website"]').val());
      formData.append('logo', logo_data);
      // Call function for redirect ajax page
 

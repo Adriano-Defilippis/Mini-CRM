@@ -72,7 +72,7 @@ class CompanyController extends Controller
       //   $skip = 0;
       // }
 
-      $companies = Company::orderBy('name')
+      $companies = Company::orderBy('created_at')
             ->paginate(10);
 
       // $companies = Company::skip($skip)->take(10)->get();
@@ -100,30 +100,23 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
 
-      $validatedLogo = $request -> validate([
-        'logo'
-      ]);
+      $validatedCompany = $request -> validated();
 
-      $validatedCompany = [
-        'name' => $request-> name,
-        'email' => $request-> email,
-        'website' => $request-> website
-      ];
 
       $file = $request -> file('logo');
 
       // Upload file in storage folder
       if ($file) {
 
-        $count_id = Company::count() + 1;
-        // Name for file
-        $targetFile = str_replace(" ", "_", $request-> name) . "_" . $count_id . ".jpg";
+          $count_id = Company::all()->last()-> id + 1;
+          // Name for file
+          $targetFile = str_replace(" ", "_", $request-> name) . "_" . $count_id . ".jpg";
 
-        $targetPath = 'storage';
+          $targetPath = 'storage';
 
-        $file->move($targetPath, $targetFile);
-        // Assegno url con nome file da salvare nel database
-        $validatedCompany['logo']=$targetFile;
+          $file->move($targetPath, $targetFile);
+          // Assegno url con nome file da salvare nel database
+          $validatedCompany['logo']=$targetFile;
         }
 
 
@@ -174,11 +167,11 @@ class CompanyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $company = Company::findOrFail($id);
+      {
+          $company = Company::findOrFail($id);
 
-        return view('company_show', compact('company'));
-    }
+          return view('company_show', compact('company'));
+      }
 
     /**
      * Show the form for editing the specified resource.
