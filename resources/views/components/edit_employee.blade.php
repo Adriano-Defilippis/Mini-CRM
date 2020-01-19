@@ -7,7 +7,13 @@
 <td>
   <select class="company_select" name="company">
     @foreach ($companies as $company)
-      <option value="{{$company -> id}}">{{$company -> name}}</option>
+      <option value="{{$company -> id}}"
+
+          @if ($company -> id == $employee -> company -> id)
+            selected
+          @endif
+        >
+        {{$company -> name}}</option>
     @endforeach
   </select>
 </td>

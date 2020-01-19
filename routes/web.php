@@ -31,7 +31,7 @@ Route::get('/employee/delete/{id}', 'EmployeeController@destroy')->name('delete.
 // Route for edit Employee, whit ajax call
 Route::get('/employee/edit/{id}', 'EmployeeController@edit')->name('edit.employee');
 // Route for update Employee, whit ajax call
-Route::get('/employee/update/{id}', 'EmployeeController@update')->name('update.employee');
+Route::post('/employee/update/{id}', 'EmployeeController@update')->name('update.employee');
 
 
 // Route for uploader image

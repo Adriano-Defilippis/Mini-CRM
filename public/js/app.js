@@ -37536,23 +37536,25 @@ function editEmployee(target_id) {
 
 
 function updateEmployee(target_id, page_emp) {
-  var thisFirstName = $('input[name="first_name"]').val();
-  var thisLastName = $('input[name="last_name"]').val();
-  var thisCompany = $('select[name="company"]').val();
-  var thisEmail = $('input[name="email"]').val();
-  var thisPhone = $('input[name="phone"]').val(); // console.log(thisCompany, thisFirstName, thisLastName);
-
+  // var thisFirstName = $('input[name="first_name"]').val();
+  // var thisLastName = $('input[name="last_name"]').val();
+  // var thisCompany =  $('select[name="company"]').val();
+  // var thisEmail = $('input[name="email"]').val();
+  // var thisPhone = $('input[name="phone"]').val();
+  var formUpdate = new FormData();
+  formUpdate.append('_token', $('meta[name="csrf-token"]').attr('content'));
+  formUpdate.append('first_name', $(' tr[data-id="' + target_id + '"] th input[name="first_name"]').val());
+  formUpdate.append('last_name', $(' tr[data-id="' + target_id + '"] td input[name="last_name"]').val());
+  formUpdate.append('company_id', $(' tr[data-id="' + target_id + '"] td select[name="company"]').val());
+  formUpdate.append('email', $(' tr[data-id="' + target_id + '"] td input[name="email"]').val());
+  formUpdate.append('phone', $(' tr[data-id="' + target_id + '"] td input[name="phone"]').val());
+  console.log("form update", formUpdate);
   $.ajax({
     url: '/employee/update/' + target_id,
-    data: {
-      _token: $('meta[name="csrf-token"]').attr('content'),
-      id: target_id,
-      first_name: thisFirstName,
-      last_name: thisLastName,
-      company: thisCompany,
-      email: thisEmail,
-      phone: thisPhone
-    },
+    data: formUpdate,
+    type: "POST",
+    contentType: false,
+    processData: false,
     success: function success(results) {
       getEmployees(page_emp);
       console.log(results);

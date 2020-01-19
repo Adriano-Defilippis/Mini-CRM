@@ -133,20 +133,28 @@ class EmployeeController extends Controller
     {
       // Retrieve the validated input data...
       $validatedData = $request->validated();
-
-      $validatedData = [
-        'first_name' => $request -> first_name,
-        'last_name' => $request -> last_name,
-        'company' => $request -> company,
-        'email' => $request -> email,
-        'phone' => $request -> phone
-      ];
-
       $employee_to_update = Employee::findOrFail($id);
 
-      $employee_to_update -> update([$validatedData]);
+      $id_company = (int)$request -> company_id;
+      //
+      $employee_to_update -> company() -> associate($id_company);
+      //
+      $employee_to_update -> save();
+      // $validatedData['company_id'] = $id_company;
 
-      return response()->json();
+      $employee_to_update-> update($validatedData);
+
+
+
+
+
+
+
+      $list = [];
+      $list[] = $validatedData;
+      // $list[] = (int)$id_company;
+
+      return response()->json($list);
     }
 
     /**

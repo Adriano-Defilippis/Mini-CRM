@@ -12,7 +12,7 @@
   <tbody>
     @foreach ($employees as $employee)
 
-        <tr class="t_row_emp" data-id="{{$employee -> id}}">
+      <tr class="t_row_emp" data-id="{{$employee -> id}}">
         <th>{{$employee -> first_name}}</th>
         <td>{{$employee -> last_name}}</td>
         <td>
