@@ -60,7 +60,7 @@ public function submit(LogoRequest $request, $id) {
 	// 	'logo' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:4048'
 	// ]);
 
-	$validatedLogo = $request -> validate(['logo']);
+	$validatedLogo = $request -> validated();
 
   $file = $request -> file('logo');
 

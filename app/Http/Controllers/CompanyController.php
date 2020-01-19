@@ -200,26 +200,30 @@ class CompanyController extends Controller
      */
     public function update(CompanyRequest $request, $id)
     {
+
+      $company_to_update = Company::findOrFail($id);
       // Retrieve the validated input data...
-      // $validatedData = $request->validate();
-      // session()->flush();
-      $validatedData = $request -> validate([
+      $validatedUpdate = $request->validated([
         'name',
-        'email'
+        'email',
+        'website'
       ]);
 
-      $validatedData = [
+      // Name for file
+      $targetFile = str_replace(" ", "_", $request-> name) . "_" . $id . ".jpg";
+
+
+      $validatedUpdate = [
         'name' => $request -> name,
-        'email' => $request -> email,
-        'logo' => $request -> logo,
-        'website' => $request -> website
+        'email' =>  $request -> email,
+        'website' => $request ->  website
       ];
 
-      // $company_to_update = Company::where('id',$id)->update($validatedData);
+      // $company_to_update = Company::where('id',$id)->update([$validatedUpdate]);
 
-      // $company_to_update ->update($validatedData);
+      $company_to_update->update($validatedUpdate);
 
-      return response()->json($validatedData);
+      return response()->json();
     }
 
     /**
