@@ -37087,11 +37087,16 @@ window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(init); // Codice per gestione Employee
 
 function init() {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
   __webpack_require__(/*! ./gestione_company */ "./resources/js/gestione_company.js");
 
   __webpack_require__(/*! ./gestione_employee */ "./resources/js/gestione_employee.js");
 
-  var token = jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content');
   console.log('app.js');
 }
 
@@ -37178,17 +37183,23 @@ $(document).on('click', '#add_comp_btn', function (e) {
 
 $(document).on('click', '#create_comp_btn', function (e) {
   // checked =! checked;
+  console.log($('meta[name="csrf-token"]').attr('content'));
   var logo_data = $('#logo_file').get()[0].files[0];
   console.log(logo_data, 'logodata'); // Form data JS Object
 
   var formData = new FormData();
-  formData.append('_token', "{{ csrf_token() }}");
+  formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
   formData.append('name', $('input[name="name"]').val());
   formData.append('email', $('input[name="email"]').val());
   formData.append('website', $('input[name="website"]').val());
   formData.append('logo', logo_data); // Call function for redirect ajax page
 
   var my_this = this;
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
   console.log('form data', formData); // Ajax call to send request to validation on back end
 
   $.ajax({
@@ -37233,7 +37244,7 @@ $(document).on('click', '.btn_edit_comp', function (e) {
   editCompany(id_to_edit);
 }); // Azione invio update Company
 
-$(document).on('click', '#this_btn', function (e) {
+$(document).on('click', '#update_company', function (e) {
   var id_toDelete = $(this).data('id');
   updateCompany(id_toDelete, page);
 }); // Azione submit invio form update logo
@@ -37266,21 +37277,31 @@ function editCompany(id) {
 
 
 function updateCompany(target_id, page) {
-  var myThis = this;
   var thisName = $('input[name="name"]').val();
   var thisEmail = $('input[name="email"]').val();
   var thisLogo = $('input[name="logo"]').val();
   var thisWebsite = $('input[name="website"]').val();
   console.log($('input[name="name"]').val());
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
   $.ajax({
     url: '/company/update/' + target_id,
+    type: "POST",
+    contentType: false,
+    processData: false,
     data: {
-      "_token": "{{ csrf_token() }}",
+      _token: $('meta[name="csrf-token"]').attr('content'),
       id: target_id,
       name: thisName,
       email: thisEmail,
       logo: thisLogo,
       website: thisWebsite
+    },
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     config: {
       headers: {
@@ -37291,7 +37312,7 @@ function updateCompany(target_id, page) {
       getCompanies(page);
       console.log(results);
     },
-    error: function error(err, responseText, tipo, altro, edancora) {
+    error: function error(err) {
       var message_errors = err.responseJSON.errors; // Funzione stampa errori in pagina
 
       errorMessageForm(message_errors);
@@ -37328,7 +37349,7 @@ function destroyCompany(target_id, page) {
   $.ajax({
     url: '/company/delete/' + target_id,
     data: {
-      "_token": "{{ csrf_token() }}",
+      "_token": $('meta[name="csrf-token"]').attr('content'),
       id: target_id
     },
     success: function success(results) {
@@ -37373,7 +37394,7 @@ function updateLogo(id, page, e) {
   var logo_file = $('#update_logo').get()[0].files[0]; // Form data JS Object
 
   var formData = new FormData();
-  formData.append('_token', "{{ csrf_token() }}");
+  formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
   formData.append('logo', logo_file);
   $.ajax({
     url: '/upload/' + id,
@@ -37440,6 +37461,11 @@ $(document).on('click', '.btn_delete_empl', function (e) {
 $(document).on('click', '.btn_edit_empl', function (e) {
   var id_to_edit = $(this).data('id');
   editEmployee(id_to_edit);
+}); // Azione invio update Employee
+
+$(document).on('click', '#update_employee', function (e) {
+  var id_toDelete = $(this).data('id');
+  updateEmployee(id_toDelete, page_emp);
 }); // Azione tasto back_btn
 
 $(document).on('click', '.back_btn_emp', function (e) {
@@ -37476,7 +37502,7 @@ function destroyEmployee(target_id, page) {
   $.ajax({
     url: '/employee/delete/' + target_id,
     data: {
-      "_token": "{{ csrf_token() }}",
+      "_token": $('meta[name="csrf-token"]').attr('content'),
       id: target_id
     },
     success: function success(results) {
@@ -37505,6 +37531,59 @@ function editEmployee(target_id) {
       console.log(err);
     }
   });
+} // Function to send Update Employee Ajax Call
+
+
+function updateEmployee(target_id, page_emp) {
+  var thisFirstName = $('input[name="first_name"]').val();
+  var thisLastName = $('input[name="last_name"]').val();
+  var thisCompany = $('select[name="company"]').val();
+  var thisEmail = $('input[name="email"]').val();
+  var thisPhone = $('input[name="phone"]').val(); // console.log(thisCompany, thisFirstName, thisLastName);
+
+  $.ajax({
+    url: '/employee/update/' + target_id,
+    data: {
+      _token: $('meta[name="csrf-token"]').attr('content'),
+      id: target_id,
+      first_name: thisFirstName,
+      last_name: thisLastName,
+      company: thisCompany,
+      email: thisEmail,
+      phone: thisPhone
+    },
+    success: function success(results) {
+      getEmployees(page_emp);
+      console.log(results);
+    },
+    error: function error(err) {
+      var message_errors = err.responseJSON.errors; // Funzione stampa errori in pagina
+
+      errorMessageForm(message_errors);
+      console.log(err);
+    }
+  });
+} // Funzione gestione errori request form
+
+
+function errorMessageForm(obj) {
+  for (var property in obj) {
+    var mess_arr = obj[property];
+    var str = '<div>';
+    var target = $('input[name=' + property + ']');
+
+    if (property == 'company') {
+      target = $('select[name=' + property + ']');
+    }
+
+    for (var i = 0; i < mess_arr.length; i++) {
+      str += '<p class="font-weight-bold">' + mess_arr[i] + '</p>';
+      target.parent().addClass('border border-danger');
+    }
+
+    str += '</div>';
+    target.parent().append(str);
+  }
 }
 
 /***/ }),

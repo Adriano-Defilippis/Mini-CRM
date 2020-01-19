@@ -11,9 +11,14 @@ $(document).ready(init);
 
 // Codice per gestione Employee
 function init() {
+  
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
 
   require('./gestione_company');
   require('./gestione_employee');
-  var token = $('meta[name="csrf-token"]').attr('content');
   console.log('app.js');
 }

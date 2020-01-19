@@ -17,6 +17,6 @@
   <input type="url" name="website"value="{{$company-> website}}">
 </td>
 <td>
-  <button id="this_btn" data-id="{{$company-> id}}" type="button" class="btn btn-light">edit</button>
+  <button id="update_company" data-id="{{$company-> id}}" type="button" class="btn btn-light">edit</button>
   <button class="back_btn" type="button" name="button">Back</button>
 </td>

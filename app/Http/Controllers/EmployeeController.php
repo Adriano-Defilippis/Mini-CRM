@@ -129,9 +129,24 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeRequest $request, $id)
     {
-        //
+      // Retrieve the validated input data...
+      $validatedData = $request->validated();
+
+      $validatedData = [
+        'first_name' => $request -> first_name,
+        'last_name' => $request -> last_name,
+        'company' => $request -> company,
+        'email' => $request -> email,
+        'phone' => $request -> phone
+      ];
+
+      $employee_to_update = Employee::findOrFail($id);
+
+      $employee_to_update -> update([$validatedData]);
+
+      return response()->json();
     }
 
     /**

@@ -45,12 +45,12 @@ console.log('gestione_company.js');
    $(document).on('click', '#create_comp_btn', function(e){
 
      // checked =! checked;
-
+     console.log($('meta[name="csrf-token"]').attr('content'));
      var logo_data = $('#logo_file').get()[0].files[0];
      console.log(logo_data, 'logodata');
      // Form data JS Object
      var formData = new FormData();
-     formData.append( '_token', "{{ csrf_token() }}");
+     formData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
      formData.append('name', $('input[name="name"]').val());
      formData.append('email', $('input[name="email"]').val());
      formData.append('website', $('input[name="website"]').val());
@@ -59,7 +59,11 @@ console.log('gestione_company.js');
 
      var my_this = this;
 
-
+     $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       }
+     });
 
      console.log('form data', formData);
 
@@ -122,7 +126,7 @@ console.log('gestione_company.js');
    // Azione Edit Company
    $(document).on('click', '.btn_edit_comp', function(e){
 
-     var id_to_edit = $(this).data('id');   
+     var id_to_edit = $(this).data('id');
 
      editCompany(id_to_edit);
    });
@@ -130,7 +134,7 @@ console.log('gestione_company.js');
 
 
    // Azione invio update Company
-   $(document).on('click', '#this_btn', function(e){
+   $(document).on('click', '#update_company', function(e){
 
      var id_toDelete = $(this).data('id');
 
@@ -179,24 +183,34 @@ console.log('gestione_company.js');
 
   function updateCompany(target_id, page){
 
-    var myThis = this;
     var thisName = $('input[name="name"]').val();
     var thisEmail = $('input[name="email"]').val();
     var thisLogo =  $('input[name="logo"]').val();
     var thisWebsite = $('input[name="website"]').val();
     console.log($('input[name="name"]').val());
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
 
     $.ajax({
 
       url: '/company/update/' + target_id,
+      type: "POST",
+      contentType: false,
+      processData: false,
       data: {
-        "_token": "{{ csrf_token() }}",
+        _token: $('meta[name="csrf-token"]').attr('content'),
           id: target_id,
           name: thisName,
           email: thisEmail,
           logo: thisLogo,
           website:thisWebsite
       },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
 
       config: {
          headers: {
@@ -209,7 +223,7 @@ console.log('gestione_company.js');
         getCompanies(page);
         console.log(results);
       },
-      error: function(err, responseText, tipo, altro, edancora){
+      error: function(err){
 
         var message_errors = err.responseJSON.errors;
 
@@ -261,7 +275,7 @@ console.log('gestione_company.js');
 
       url: '/company/delete/' + target_id,
       data: {
-        "_token": "{{ csrf_token() }}",
+        "_token": $('meta[name="csrf-token"]').attr('content'),
           id: target_id
       },
       success: function(results){
@@ -319,7 +333,7 @@ console.log('gestione_company.js');
       var logo_file = $('#update_logo').get()[0].files[0];
       // Form data JS Object
       var formData = new FormData();
-      formData.append( '_token', "{{ csrf_token() }}");
+      formData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
       formData.append('logo', logo_file);
 
       $.ajax({

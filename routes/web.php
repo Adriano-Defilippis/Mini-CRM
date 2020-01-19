@@ -11,13 +11,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Route for show cpompany detail and Employees list
 Route::get('/company/{id}', 'CompanyController@show')->name('show.company');
 // Route for create form company, whit ajax call
-Route::get('/createcompany', 'CompanyController@create')->name('create.company')->middleware('auth');
+Route::get('/createcompany', 'CompanyController@create')->name('create.company');
 // Route for storage company, whit ajax call
-Route::post('/storecompany', 'CompanyController@store')->name('store.company')->middleware('auth');
+Route::post('/storecompany', 'CompanyController@store')->name('store.company');
 // Route for edit company, whit ajax call
 Route::get('/company/edit/{id}', 'AjaxCompanyController@edit')->name('edit.company');
 // Route for update company, whit ajax call
-Route::get('/company/update/{id}', 'AjaxCompanyController@update')->name('update.company');
+Route::post('/company/update/{id}', 'AjaxCompanyController@update')->name('update.company');
 // Route for delete company, whit ajax call
 Route::get('/company/delete/{id}', 'CompanyController@destroy')->name('delete.company');
 // Route for ajax call companies list
@@ -26,10 +26,12 @@ Route::get('/companies', 'CompanyController@showMore')->name('show_more_comp');
 Route::get('/lastcompany', 'CompanyController@lastResult')->name('last.result');
 // Route for ajax call employee list
 Route::get('/employees', 'EmployeeController@showMore')->name('show_more_empl');
-// Route for delete company, whit ajax call
+// Route for delete Employee, whit ajax call
 Route::get('/employee/delete/{id}', 'EmployeeController@destroy')->name('delete.employee');
-// Route for delete company, whit ajax call
+// Route for edit Employee, whit ajax call
 Route::get('/employee/edit/{id}', 'EmployeeController@edit')->name('edit.employee');
+// Route for update Employee, whit ajax call
+Route::get('/employee/update/{id}', 'EmployeeController@update')->name('update.employee');
 
 
 // Route for uploader image
