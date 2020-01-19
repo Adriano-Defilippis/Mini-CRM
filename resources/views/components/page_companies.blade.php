@@ -12,7 +12,7 @@
 
 
     @foreach ($companies as $company)
-      <tr class="t_row" data-id="{{$company -> id}}">
+      <tr class="t_row" company-id="{{$company -> id}}">
         <th>
           <a href="{{route('show.company', $company-> id)}}">
             {{$company -> name}}

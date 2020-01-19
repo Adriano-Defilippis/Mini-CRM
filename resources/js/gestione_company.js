@@ -171,14 +171,7 @@ console.log('gestione_company.js');
       url: '/company/edit/' + id,
       success: function(results){
 
-
-        $('.t_row').each(function(key, value){
-
-          if ($(this).data('id') == id) {
-
-            $(this).html(results);
-          }
-        });
+        $('tr[company-id="'+ id +'"]').html(results);
         console.log('edit ajax company', results);
       },
       error: function(err){
@@ -337,9 +330,8 @@ console.log('gestione_company.js');
 
   }
 
-  function updateLogo(id, page, e){
+  function updateLogo(id, e){
 
-      e.preventDefault();
       var token = $('meta[name="csrf-token"]').attr('content');
 
       var logo_file = $('#update_logo').get()[0].files[0];
@@ -359,9 +351,9 @@ console.log('gestione_company.js');
 
           console.log("data", data);
           // Insert rendering page
-          $('.card_companies').html(data);
+          // $('.card_companies').html(data);
           // e.preventDefault();
-          getCompanies(page);
+          refreshTr(id);
           console.log('data_page', page);
         },
 
@@ -429,7 +421,7 @@ console.log('gestione_company.js');
       success: function(results){
 
         // Insert rendering page
-        $('tr[data-id="' + myId +'"]').html(results);
+        $('tr[company-id="' + myId +'"]').html(results);
         console.log('refresh');
         console.log('refrssch',$('.t_row_emp[data-id="' + myId +'"]'), results );
       },

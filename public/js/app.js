@@ -37269,11 +37269,7 @@ function editCompany(id) {
   $.ajax({
     url: '/company/edit/' + id,
     success: function success(results) {
-      $('.t_row').each(function (key, value) {
-        if ($(this).data('id') == id) {
-          $(this).html(results);
-        }
-      });
+      $('tr[company-id="' + id + '"]').html(results);
       console.log('edit ajax company', results);
     },
     error: function error(err) {
@@ -37396,8 +37392,7 @@ function getCompanies(page) {
   });
 }
 
-function updateLogo(id, page, e) {
-  e.preventDefault();
+function updateLogo(id, e) {
   var token = $('meta[name="csrf-token"]').attr('content');
   var logo_file = $('#update_logo').get()[0].files[0]; // Form data JS Object
 
@@ -37412,10 +37407,10 @@ function updateLogo(id, page, e) {
     data: formData,
     success: function success(data) {
       console.log("data", data); // Insert rendering page
+      // $('.card_companies').html(data);
+      // e.preventDefault();
 
-      $('.card_companies').html(data); // e.preventDefault();
-
-      getCompanies(page);
+      refreshTr(id);
       console.log('data_page', page);
     },
     error: function error(err) {
@@ -37470,7 +37465,7 @@ function refreshTr(myId) {
     dataType: "JSON",
     success: function success(results) {
       // Insert rendering page
-      $('tr[data-id="' + myId + '"]').html(results);
+      $('tr[company-id="' + myId + '"]').html(results);
       console.log('refresh');
       console.log('refrssch', $('.t_row_emp[data-id="' + myId + '"]'), results);
     },
@@ -37566,11 +37561,7 @@ function editEmployee(target_id) {
   $.ajax({
     url: '/employee/edit/' + target_id,
     success: function success(results) {
-      $('.t_row_emp').each(function (key, value) {
-        if ($(this).data('id') == target_id) {
-          $(this).html(results);
-        }
-      });
+      $('tr[employee-id="' + target_id + '"]').html(results);
       console.log('edit ajax company', results);
     },
     error: function error(err) {
@@ -37590,7 +37581,7 @@ function updateEmployee(target_id, page_emp) {
   formUpdate.append('_token', $('meta[name="csrf-token"]').attr('content'));
   formUpdate.append('first_name', $(' tr[data-id="' + target_id + '"] th input[name="first_name"]').val());
   formUpdate.append('last_name', $(' tr[data-id="' + target_id + '"] td input[name="last_name"]').val());
-  formUpdate.append('company_id', $(' tr[data-id="' + target_id + '"] td select[name="company"]').val());
+  formUpdate.append('company_id', parseInt($(' tr[employee-id="' + target_id + '"] td select[name="company"]').val()));
   formUpdate.append('email', $(' tr[data-id="' + target_id + '"] td input[name="email"]').val());
   formUpdate.append('phone', $(' tr[data-id="' + target_id + '"] td input[name="phone"]').val());
   console.log("form update", formUpdate);
@@ -37601,7 +37592,8 @@ function updateEmployee(target_id, page_emp) {
     contentType: false,
     processData: false,
     success: function success(results) {
-      getEmployees(page_emp);
+      // getEmployees(page_emp);
+      refreshEmployeeTr(target_id);
       console.log(results);
     },
     error: function error(err) {
@@ -37632,6 +37624,22 @@ function errorMessageForm(obj) {
     str += '</div>';
     target.parent().append(str);
   }
+} // Funzione per refresh singolo item dopo update
+
+
+function refreshEmployeeTr(myId) {
+  $.ajax({
+    url: '/refresh/employee/' + myId,
+    dataType: "JSON",
+    success: function success(results) {
+      // Insert rendering page
+      $('tr[employee-id="' + myId + '"]').html(results);
+      console.log('refresh', results);
+    },
+    error: function error(err) {
+      console.log(err);
+    }
+  });
 }
 
 /***/ }),

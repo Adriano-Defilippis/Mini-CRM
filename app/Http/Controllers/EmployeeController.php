@@ -135,7 +135,9 @@ class EmployeeController extends Controller
       $validatedData = $request->validated();
       $employee_to_update = Employee::findOrFail($id);
 
-      $id_company = (int)$request -> company_id;
+      $id_str = $request -> company_id;
+
+      $id_company = (int)$id_str;
       //
       $employee_to_update -> company() -> associate($id_company);
       //

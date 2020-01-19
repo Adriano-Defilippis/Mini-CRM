@@ -35,8 +35,11 @@ Route::post('/employee/update/{id}', 'EmployeeController@update')->name('update.
 // Route for live search_company
 Route::get('/search/company', 'AjaxCompanyController@liveSearch')->name('search.company');
 
-// Route for refreshcompany item after update
+// Route for Ajax refreshcompany item after update
 Route::get('/refresh/company/{id}', 'AjaxCompanyController@refreshItem')->name('refresh.company');
+
+// Route for Ajax refreshcompany item after update
+Route::get('/refresh/employee/{id}', 'AjaxEmployeeController@refreshItem')->name('refresh.employee');
 
 // Route for uploader image
 Route::post('/form/{id}', 'LogoController@show')->name('index.upload');
