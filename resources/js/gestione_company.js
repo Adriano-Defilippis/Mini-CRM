@@ -224,7 +224,7 @@ console.log('gestione_company.js');
 
       success: function(results){
 
-        // getCompanies(page);
+        getCompanies(page);
         console.log("updatecompany",results);
       },
       error: function(err){

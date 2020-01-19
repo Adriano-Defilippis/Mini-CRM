@@ -37310,7 +37310,7 @@ function updateCompany(target_id, page) {
       }
     },
     success: function success(results) {
-      // getCompanies(page);
+      getCompanies(page);
       console.log("updatecompany", results);
     },
     error: function error(err) {
