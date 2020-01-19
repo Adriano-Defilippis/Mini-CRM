@@ -19,11 +19,11 @@
           </a>
         </th>
         <td>{{$company -> email}}</td>
-        <td data-page="{{$page}}" class="container_logo">
+        <td data-page="" class="container_logo">
           <img class="logo" src="storage/{{$company -> logo}}" alt="">
-          <span class="logo_btn" data-page="{{$page}}" data-id={{$company -> id}}>modifica</span>
+          <span class="logo_btn" data-page="s" data-id={{$company -> id}}>modifica</span>
         </td>
-        <td>{{$company -> website}}</td>
+        <td>{{$company -> website}}{{$count_companies}}</td>
         <td>
           <button type="button" class="btn_edit_comp btn btn-light" data-id="{{$company -> id}}">Edit</button>
           <button type="button" class="btn_delete_comp btn btn-danger" data-id="{{$company -> id}}">Delete</button>
@@ -39,10 +39,10 @@
 {{-- Navigatore risultati --}}
 <p>
   @php
-    $counter_companies = 1;
+    $counter_result = 1;
   @endphp
   @for ($i=1; $i <= $count_companies; $i+= 10)
-     <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+     <span class="nav_live_comp" data-page="{{$counter_result}}"> {{ $counter_result++ }} </span>
   @endfor
 </p>
 
@@ -100,26 +100,5 @@
       }
     });
 
-  }
-
-  // function refresh after apdate
-  function refreshTr(myId){
-
-    $.ajax({
-
-      url: '/refresh/company/' + myId,
-      // dataType: "JSON",
-      success: function(results){
-
-        // Insert rendering page
-        $('tr[data-id="' + myId +'"]').html(results);
-        console.log('refresh');
-        console.log('refrssch',$('.t_row_emp[data-id="' + myId +'"]'), results );
-      },
-      error: function(err){
-
-        console.log(err);
-      }
-    });
   }
 </script>

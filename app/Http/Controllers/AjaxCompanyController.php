@@ -8,6 +8,7 @@ use App\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CompanyRequest;
+use DB;
 
 
 class AjaxCompanyController extends Controller
@@ -20,6 +21,21 @@ class AjaxCompanyController extends Controller
     public function index()
     {
         //
+    }
+
+    /**
+     * Refresh a single item updated.
+     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function refreshItem($id)
+    {
+        // $html = view('components.table_row_company')
+
+        $company = Company::findOrFail($id);
+        $html = view('components.table_row_company', compact('company'))->render();
+        return response()->json($html);
     }
 
     /**
@@ -52,7 +68,7 @@ class AjaxCompanyController extends Controller
     public function liveSearch(Request $request)
     {
       $list = [];
-      $page = $request ->get('page');
+      $page = $request -> get('page');
       $list[] = $request -> get('query');
 
       if ($request -> ajax()) {
@@ -61,9 +77,10 @@ class AjaxCompanyController extends Controller
 
         if ($query != '') {
 
-          $companies = Company::where('name', 'like', '%'. $query . '%')
-                            ->orWhere('name', 'like', '%'. $query . '%')
-                            ->orWhere('name', 'like', '%'. $query . '%')
+          $companies = DB::table('companies')
+                            ->where('name', 'like', '%'. $query . '%')
+                            ->orWhere('email', 'like', '%'. $query . '%')
+                            ->orWhere('website', 'like', '%'. $query . '%')
                             ->orderBy('created_at')
                             ->get();
 
@@ -71,6 +88,10 @@ class AjaxCompanyController extends Controller
 
           $companies = Company::orderBy('created_at')
                         ->paginate(10);
+
+
+          $page = 1;
+
         }
 
         // Conteggio dei risultati
@@ -79,25 +100,32 @@ class AjaxCompanyController extends Controller
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {
 
+          foreach ($companies as $company) {
 
-          $html = view('components.page_companies', compact('companies', 'count_companies', 'page'))
-                ->render();
-
-          $list[]= $html;
-          $list[]= ['companies' => $companies];
+          $output[] = '
 
 
-          return response()->json($html);
+          ';
+          }
 
         } else {
 
-          $message = '
+          $output = '
             <td>
               No results for search
             </td>
 
           ';
-          return response()->json($message);
+
+          $companies = [];
+
+          $html = view('components.search_company', compact('companies', 'count_companies', 'message'))
+                ->render();
+
+          $list[]= $html;
+          $list[] = $message;
+
+          return response()->json($html);
         }
 
 

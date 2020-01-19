@@ -37317,7 +37317,8 @@ function updateCompany(target_id, page) {
       }
     },
     success: function success(results) {
-      getCompanies(page);
+      // getCompanies(page);
+      refreshTr(target_id);
       console.log("updatecompany", results);
     },
     error: function error(err) {
@@ -37397,7 +37398,6 @@ function getCompanies(page) {
 
 function updateLogo(id, page, e) {
   e.preventDefault();
-  console.log('click', $(this), id, page);
   var token = $('meta[name="csrf-token"]').attr('content');
   var logo_file = $('#update_logo').get()[0].files[0]; // Form data JS Object
 
@@ -37456,6 +37456,23 @@ function liveSearchCompany(liveQuery, mypage) {
       // Insert rendering page
       $('.card_companies').html(results);
       console.log('live search', results);
+    },
+    error: function error(err) {
+      console.log(err);
+    }
+  });
+} // function refresh after apdate
+
+
+function refreshTr(myId) {
+  $.ajax({
+    url: '/refresh/company/' + myId,
+    dataType: "JSON",
+    success: function success(results) {
+      // Insert rendering page
+      $('tr[data-id="' + myId + '"]').html(results);
+      console.log('refresh');
+      console.log('refrssch', $('.t_row_emp[data-id="' + myId + '"]'), results);
     },
     error: function error(err) {
       console.log(err);
