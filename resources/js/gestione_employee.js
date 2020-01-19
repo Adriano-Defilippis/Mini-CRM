@@ -128,11 +128,11 @@ function updateEmployee(target_id, page_emp){
 
   var formUpdate = new FormData();
   formUpdate.append( '_token', $('meta[name="csrf-token"]').attr('content'));
-  formUpdate.append('first_name', $(' tr[data-id="' + target_id +'"] th input[name="first_name"]').val());
-  formUpdate.append('last_name', $(' tr[data-id="' + target_id +'"] td input[name="last_name"]').val());
+  formUpdate.append('first_name', $(' tr[employee-id="' + target_id +'"] th input[name="first_name"]').val());
+  formUpdate.append('last_name', $(' tr[employee-id="' + target_id +'"] td input[name="last_name"]').val());
   formUpdate.append('company_id', parseInt($(' tr[employee-id="' + target_id +'"] td select[name="company"]').val()));
-  formUpdate.append('email', $(' tr[data-id="' + target_id +'"] td input[name="email"]').val());
-  formUpdate.append('phone', $(' tr[data-id="' + target_id +'"] td input[name="phone"]').val());
+  formUpdate.append('email', $(' tr[employee-id="' + target_id +'"] td input[name="email"]').val());
+  formUpdate.append('phone', $(' tr[employee-id="' + target_id +'"] td input[name="phone"]').val());
 
     console.log("form update", formUpdate);
 

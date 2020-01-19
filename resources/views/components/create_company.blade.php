@@ -1,5 +1,5 @@
 
-<tr id="add_comp_form" data-page="{{$counter_employees}}">
+<tr id="add_comp_form" company-id="{{$counter_employees}}">
   <th>
     <input type="text" name="name" placeholder="Insert name of a Company" value="">
     {{-- TODO inserire messaggi di errore validazione campi --}}

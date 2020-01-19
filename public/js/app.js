@@ -37192,13 +37192,15 @@ $(document).on('click', '#create_comp_btn', function (e) {
   // checked =! checked;
   console.log($('meta[name="csrf-token"]').attr('content'));
   var logo_data = $('#logo_file').get()[0].files[0];
+  var myParent = $(this).parent();
+  var target_id = myParent.parent();
   console.log(logo_data, 'logodata'); // Form data JS Object
 
   var formData = new FormData();
   formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-  formData.append('name', $('tr[data-id="' + target_id + '"] th input[name="name"]').val());
-  formData.append('email', $('tr[data-id="' + target_id + '"] td input[name="email"]').val());
-  formData.append('website', $('tr[data-id="' + target_id + '"] td input[name="website"]').val());
+  formData.append('name', $('#add_comp_form th input[name="name"]').val());
+  formData.append('email', $('#add_comp_form td input[name="email"]').val());
+  formData.append('website', $('#add_comp_form td input[name="website"]').val());
   formData.append('logo', logo_data); // Call function for redirect ajax page
 
   var my_this = this;
@@ -37220,9 +37222,7 @@ $(document).on('click', '#create_comp_btn', function (e) {
       $('#add_comp_form').html("New Company Added!");
       var count_items = data[1];
       var last_page = Math.ceil(count_items / 10);
-      console.log("data store company ", data);
-      console.log('last page', last_page);
-      console.log('count_items', count_items); // Message succes
+      console.log("data store company ", data); // Message succes
 
       setTimeout(function () {
         // $('#add_comp_form').remove();
@@ -37289,9 +37289,9 @@ function updateCompany(target_id, page) {
   }
 
   formUpdate.append('_token', $('meta[name="csrf-token"]').attr('content'));
-  formUpdate.append('name', $('input[name="name"]').val());
-  formUpdate.append('email', $('input[name="email"]').val());
-  formUpdate.append('website', $('input[name="website"]').val());
+  formUpdate.append('name', $('th[company-id="' + target_id + '"] input[name="name"]').val());
+  formUpdate.append('email', $('tr[company-id="' + target_id + '"] input[name="email"]').val());
+  formUpdate.append('website', $('tr[company-id="' + target_id + '"] input[name="website"]').val());
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -37579,11 +37579,11 @@ function updateEmployee(target_id, page_emp) {
   // var thisPhone = $('input[name="phone"]').val();
   var formUpdate = new FormData();
   formUpdate.append('_token', $('meta[name="csrf-token"]').attr('content'));
-  formUpdate.append('first_name', $(' tr[data-id="' + target_id + '"] th input[name="first_name"]').val());
-  formUpdate.append('last_name', $(' tr[data-id="' + target_id + '"] td input[name="last_name"]').val());
+  formUpdate.append('first_name', $(' tr[employee-id="' + target_id + '"] th input[name="first_name"]').val());
+  formUpdate.append('last_name', $(' tr[employee-id="' + target_id + '"] td input[name="last_name"]').val());
   formUpdate.append('company_id', parseInt($(' tr[employee-id="' + target_id + '"] td select[name="company"]').val()));
-  formUpdate.append('email', $(' tr[data-id="' + target_id + '"] td input[name="email"]').val());
-  formUpdate.append('phone', $(' tr[data-id="' + target_id + '"] td input[name="phone"]').val());
+  formUpdate.append('email', $(' tr[employee-id="' + target_id + '"] td input[name="email"]').val());
+  formUpdate.append('phone', $(' tr[employee-id="' + target_id + '"] td input[name="phone"]').val());
   console.log("form update", formUpdate);
   $.ajax({
     url: '/employee/update/' + target_id,
