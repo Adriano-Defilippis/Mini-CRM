@@ -17,7 +17,7 @@ Route::post('/storecompany', 'CompanyController@store')->name('store.company');
 // Route for edit company, whit ajax call
 Route::get('/company/edit/{id}', 'AjaxCompanyController@edit')->name('edit.company');
 // Route for update company, whit ajax call
-Route::post('/company/update/{id}', 'AjaxCompanyController@update')->name('update.company');
+Route::post('/company/update/{id}', 'CompanyController@update')->name('update.company');
 // Route for delete company, whit ajax call
 Route::get('/company/delete/{id}', 'CompanyController@destroy')->name('delete.company');
 // Route for ajax call companies list
@@ -38,6 +38,8 @@ Route::get('/employee/update/{id}', 'EmployeeController@update')->name('update.e
 Route::post('/form/{id}', 'LogoController@show')->name('index.upload');
 Route::post('/upload/{id}', 'LogoController@submit')->name('example.upload');
 Route::post('/ajax_remove_file/{id}', 'LogoController@removeFile');
+
+Route::post('/companyupdate/prova/{id}', 'ProveController@update')->name('prova.update')->middleware('auth');
 
 
 // Route::get('/control_panel', 'HomeController@index')->name('home');

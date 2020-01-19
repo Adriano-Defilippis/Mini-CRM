@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest;
 use App\Company;
 use App\Employee;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\CompanyRequest;
 
-
-class AjaxCompanyController extends Controller
+class ProveController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -44,17 +41,6 @@ class AjaxCompanyController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function refreshAfterDelete(Request $request)
-    {
-
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -73,15 +59,7 @@ class AjaxCompanyController extends Controller
      */
     public function edit($id)
     {
-
-        $company = Company::findOrFail($id);
         //
-        // $html = view('components.edit_company', compact('company'))
-        //     ->render();
-        // // return a JSON array of the companies list
-        // return response()->json($html);
-
-        return view('components.edit_company', compact('company'));
     }
 
     /**
@@ -93,9 +71,14 @@ class AjaxCompanyController extends Controller
      */
     public function update(CompanyRequest $request, $id)
     {
+        $validatedRequest = $request -> validated();
+        $company_to_update = Company::findOrFail($id);
 
+        $company_to_update->update($validatedRequest);
 
+        return redirect('/home');
 
+        // dd($validatedRequest);
     }
 
     /**

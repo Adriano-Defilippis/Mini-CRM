@@ -19,5 +19,6 @@
 </td>
 <td>
   <button id="update_employee" data-id="{{$employee-> id}}" type="button" class="btn btn-light">edit</button>
+
   <button class="back_btn_emp" type="button" name="button">Back</button>
 </td>

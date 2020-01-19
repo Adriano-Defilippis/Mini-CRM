@@ -201,29 +201,38 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, $id)
     {
 
-      $company_to_update = Company::findOrFail($id);
-      // Retrieve the validated input data...
-      $validatedUpdate = $request->validated([
-        'name',
-        'email',
-        'website'
-      ]);
+      // $company_to_update = Company::findOrFail($id);
+      // // Retrieve the validated input data...
+      // $validatedUpdate = $request->validated([
+      //   'name',
+      //   'email',
+      //   'website'
+      // ]);
+      //
+      // // Name for file
+      // $targetFile = str_replace(" ", "_", $request-> name) . "_" . $id . ".jpg";
+      //
+      //
+      // $validatedUpdate = [
+      //   'name' => $request -> name,
+      //   'email' =>  $request -> email,
+      //   'website' => $request ->  website
+      // ];
+      //
+      // // $company_to_update = Company::where('id',$id)->update([$validatedUpdate]);
+      //
+      // $company_to_update->update($validatedUpdate);
+      //
+      // return response()->json([$request]);
+      $validatedCompany = $request -> validated();
+      $list = [];
 
-      // Name for file
-      $targetFile = str_replace(" ", "_", $request-> name) . "_" . $id . ".jpg";
-
-
-      $validatedUpdate = [
-        'name' => $request -> name,
-        'email' =>  $request -> email,
-        'website' => $request ->  website
-      ];
-
-      // $company_to_update = Company::where('id',$id)->update([$validatedUpdate]);
-
-      $company_to_update->update($validatedUpdate);
-
-      return response()->json();
+      // $list = $validatedCompany;
+      // $list = $request-> name;
+      // $list = $request;
+      $list = $validatedCompany;
+      // $list = 'ciao';
+      return response()->json($list);
     }
 
     /**

@@ -183,11 +183,21 @@ console.log('gestione_company.js');
 
   function updateCompany(target_id, page){
 
-    var thisName = $('input[name="name"]').val();
-    var thisEmail = $('input[name="email"]').val();
-    var thisLogo =  $('input[name="logo"]').val();
-    var thisWebsite = $('input[name="website"]').val();
-    console.log($('input[name="name"]').val());
+    var formUpdate = new FormData();
+
+    // Verifico se c'è stato upload file immagine
+    if ($('#update_logo').length > 0) {
+
+      var logo_data = $('#update_logo').get()[0].files[0];
+      formUpdate.append('logo', logo_data);
+      console.log('logo', logo_data);
+    }
+
+    formUpdate.append( '_token', $('meta[name="csrf-token"]').attr('content'));
+    formUpdate.append('name', $('input[name="name"]').val());
+    formUpdate.append('email', $('input[name="email"]').val());
+    formUpdate.append('website', $('input[name="website"]').val());
+
     $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -200,14 +210,8 @@ console.log('gestione_company.js');
       type: "POST",
       contentType: false,
       processData: false,
-      data: {
-        _token: $('meta[name="csrf-token"]').attr('content'),
-          id: target_id,
-          name: thisName,
-          email: thisEmail,
-          logo: thisLogo,
-          website:thisWebsite
-      },
+      dataType: "JSON",
+      data: formUpdate,
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
@@ -220,8 +224,8 @@ console.log('gestione_company.js');
 
       success: function(results){
 
-        getCompanies(page);
-        console.log(results);
+        // getCompanies(page);
+        console.log("updatecompany",results);
       },
       error: function(err){
 
