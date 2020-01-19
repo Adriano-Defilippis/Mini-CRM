@@ -63,14 +63,7 @@ class CompanyController extends Controller
     {
 
       $page = $request -> page;
-      //
-      // $max = $page * 10;
-      // $skip = $max - 10;
-      //
-      // if ($page == 1) {
-      //
-      //   $skip = 0;
-      // }
+
 
       $companies = Company::orderBy('created_at')
             ->paginate(10);

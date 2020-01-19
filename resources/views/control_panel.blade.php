@@ -15,6 +15,7 @@
       <div class="card-header">
         Companies list
       </div>
+      <input id="search_company" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <div class="card_companies card-body">
 
         {{-- Component for table body results --}}

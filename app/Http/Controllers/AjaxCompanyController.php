@@ -49,8 +49,60 @@ class AjaxCompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function refreshAfterDelete(Request $request)
+    public function liveSearch(Request $request)
     {
+      $list = [];
+      $page = $request ->get('page');
+      $list[] = $request -> get('query');
+
+      if ($request -> ajax()) {
+
+        $query = $request -> get('query');
+
+        if ($query != '') {
+
+          $companies = Company::where('name', 'like', '%'. $query . '%')
+                            ->orWhere('name', 'like', '%'. $query . '%')
+                            ->orWhere('name', 'like', '%'. $query . '%')
+                            ->orderBy('created_at')
+                            ->get();
+
+        } else {
+
+          $companies = Company::orderBy('created_at')
+                        ->paginate(10);
+        }
+
+        // Conteggio dei risultati
+        $count_companies = $companies -> count();
+
+        // Gestione output dopo la ricerca
+        if ($count_companies > 0) {
+
+
+          $html = view('components.page_companies', compact('companies', 'count_companies', 'page'))
+                ->render();
+
+          $list[]= $html;
+          $list[]= ['companies' => $companies];
+
+
+          return response()->json($html);
+
+        } else {
+
+          $message = '
+            <td>
+              No results for search
+            </td>
+
+          ';
+          return response()->json($message);
+        }
+
+
+      }
+
 
     }
 

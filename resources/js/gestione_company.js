@@ -1,6 +1,7 @@
 console.log('gestione_company.js');
 
-
+  // Pulisco campo input #search_company
+    $('#search_company').val('');
    var page = 1;
 
 
@@ -9,6 +10,13 @@ console.log('gestione_company.js');
    getCompanies(page);
    // Chiamata ajax per primi 10 risultati Employee
 
+   // Azione Search Bar
+   $(document).on('keyup', '#search_company', function(e){
+
+     var query = $('#search_company').val();
+
+     liveSearchCompany(query, page);
+   })
 
    // Azione click su navigazione pagina
    $(document).on('click','.nav_companies', function(e){
@@ -386,4 +394,27 @@ console.log('gestione_company.js');
       $('input[name='+ property +']').parent().append(str);
 
     }
+  }
+
+  // Function to lieve search results
+  function liveSearchCompany(liveQuery, mypage){
+
+    // console.log(liveQuery);
+
+    $.ajax({
+
+      url: '/search/company',
+      data: { query : liveQuery, page:  mypage},
+      // dataType: "JSON",
+      success: function(results){
+
+        // Insert rendering page
+        $('.card_companies').html(results);
+        console.log('live search', results);
+      },
+      error: function(err){
+
+        console.log(err);
+      }
+    });
   }

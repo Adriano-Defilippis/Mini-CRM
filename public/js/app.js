@@ -37154,11 +37154,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-console.log('gestione_company.js');
+console.log('gestione_company.js'); // Pulisco campo input #search_company
+
+$('#search_company').val('');
 var page = 1; // Chiamata ajax per primi 10 risultati Company
 
 getCompanies(page); // Chiamata ajax per primi 10 risultati Employee
-// Azione click su navigazione pagina
+// Azione Search Bar
+
+$(document).on('keyup', '#search_company', function (e) {
+  var query = $('#search_company').val();
+  liveSearchCompany(query, page);
+}); // Azione click su navigazione pagina
 
 $(document).on('click', '.nav_companies', function (e) {
   // remove color placeholder
@@ -37433,6 +37440,27 @@ function errorMessageForm(obj) {
     str += '</div>';
     $('input[name=' + property + ']').parent().append(str);
   }
+} // Function to lieve search results
+
+
+function liveSearchCompany(liveQuery, mypage) {
+  // console.log(liveQuery);
+  $.ajax({
+    url: '/search/company',
+    data: {
+      query: liveQuery,
+      page: mypage
+    },
+    // dataType: "JSON",
+    success: function success(results) {
+      // Insert rendering page
+      $('.card_companies').html(results);
+      console.log('live search', results);
+    },
+    error: function error(err) {
+      console.log(err);
+    }
+  });
 }
 
 /***/ }),
