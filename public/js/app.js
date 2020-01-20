@@ -37285,10 +37285,7 @@ $(document).on('click', '.logo_btn', function (e) {
 
 $(document).on('click', '.update_logo_btn', function (e) {
   e.preventDefault();
-  var id = $(this).data('id'); // var parent = $(this).parent();
-  // var page = parent.parent().data('page');
-  // console.log('page', page, id, $(this));
-
+  var id = $(this).data('id');
   updateLogo(id);
 }); // Mostra nascondi EditForm Company
 

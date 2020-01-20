@@ -193,9 +193,6 @@ console.log('gestione_company.js');
 
      e.preventDefault();
      var id = $(this).data('id');
-     // var parent = $(this).parent();
-     // var page = parent.parent().data('page');
-     // console.log('page', page, id, $(this));
      updateLogo(id);
    });
 
