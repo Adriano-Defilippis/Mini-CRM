@@ -27,7 +27,7 @@
         <td>
           <button type="button" class="btn_edit_comp btn btn-light" data-id="{{$company -> id}}">Edit</button>
           <button type="button" class="btn_delete_comp btn btn-danger" data-id="{{$company -> id}}">Delete</button>
-          
+
         </td>
       </tr>
     @endforeach
@@ -40,7 +40,7 @@
     $counter_result = 1;
   @endphp
   @for ($i=1; $i <= $count_companies; $i+= 10)
-     <span class="nav_live_comp" data-page="{{$counter_result}}"> {{ $counter_result++ }} </span>
+     <span class="nav_companies" data-type="search_comp_paginate" data-page="{{$counter_result}}"> {{ $counter_result++ }} </span>
   @endfor
 </p>
 

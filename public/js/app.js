@@ -37166,7 +37166,7 @@ $(document).on('keyup', '#search_company', function (e) {
   var query = $('#search_company').val();
 
   if (query.length > 0) {
-    liveSearchCompany(query, page);
+    liveSearchCompany(page);
   } else {
     getCompanies(page);
   }
@@ -37174,12 +37174,22 @@ $(document).on('keyup', '#search_company', function (e) {
 
 $(document).on('click', '.nav_companies', function (e) {
   // remove color placeholder
-  $('.nav_companies').css('color', '');
-  page = $(this).data('page'); // add color placeholder
+  // $('.nav_companies').css('color', '');
+  console.log('log', $(this).data('type'));
 
-  $(this).css('color', 'red'); // Chiamata ajax per i risultati successivi
+  if ($(this).data('type') == 'search_comp_paginate') {
+    var page_search = $(this).data('page'); // Chiamata Ajax per risultati successivi ricerca dati
 
-  getCompanies(page);
+    liveSearchCompany(page_search);
+    console.log('data.type', $(this));
+  } else {
+    // Chiamata ajax per i risultati successivi
+    getCompanies(page);
+  } // add color placeholder
+
+
+  $(this).css('color', 'red');
+  console.log();
 }); // Azione tasto back
 
 $(document).on('click', '.back_btn', function (e) {
@@ -37443,9 +37453,11 @@ function errorMessageForm(obj) {
 } // Function to lieve search results
 
 
-function liveSearchCompany(liveQuery, mypage) {
-  // console.log(liveQuery);
+function liveSearchCompany(mypage) {
+  var liveQuery = $('#search_company').val(); // console.log(liveQuery);
+
   $('#search_comp_mess').hide();
+  console.log('live search');
   $.ajax({
     url: '/search/company',
     data: {
@@ -37454,8 +37466,7 @@ function liveSearchCompany(liveQuery, mypage) {
     },
     // dataType: "JSON",
     success: function success(results) {
-      // Insert rendering page
-      $('.card_companies').html(results); // Controllo presenza messsaggi
+      console.log('live search success', results); // Controllo presenza messsaggi
 
       var message = results.message;
 
@@ -37463,7 +37474,10 @@ function liveSearchCompany(liveQuery, mypage) {
         $('#search_comp_mess').fadeIn(1000);
         $('#search_comp_mess li').text(message);
         console.log('live search', results, results.message, $('.tbody_companies'));
-      }
+      } // Insert rendering page
+
+
+      $('.card_companies').html(results.html);
     },
     error: function error(err) {
       console.log(err);

@@ -77,25 +77,32 @@ class AjaxCompanyController extends Controller
 
         if ($query != '') {
 
+          $current_page = $request->get('page');
+
           $companies = DB::table('companies')
                             ->where('name', 'like', '%'. $query . '%')
                             ->orWhere('email', 'like', '%'. $query . '%')
                             ->orWhere('website', 'like', '%'. $query . '%')
                             ->orderBy('created_at')
-                            ->get();
+                            ->paginate(10);
 
 
+          // $companies->page(2);
 
+          $output['current_page'] = $current_page;
         }
 
-        $count_companies = $companies -> count();
+        $count_companies = $companies -> total();
 
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {
 
-
-          $output[] = view('components.search_company', compact('companies', 'count_companies'))
+          // Count copmany result query
+          $output['count_companies'] = $count_companies;
+          $output['companies'] = $companies;
+          $output['html'] = view('components.search_company', compact('companies', 'count_companies'))
                 ->render();
+
 
         } else {
 

@@ -14,9 +14,8 @@ console.log('gestione_company.js');
    $(document).on('keyup', '#search_company', function(e){
 
      var query = $('#search_company').val();
-
      if (query.length > 0) {
-       liveSearchCompany(query, page);
+       liveSearchCompany(page);
      }else {
        getCompanies(page);
      }
@@ -26,13 +25,26 @@ console.log('gestione_company.js');
    $(document).on('click','.nav_companies', function(e){
 
      // remove color placeholder
-     $('.nav_companies').css('color', '');
-     page = $(this).data('page');
+     // $('.nav_companies').css('color', '');
+     console.log('log',$(this).data('type'));
+
+     if ($(this).data('type') == 'search_comp_paginate') {
+
+      var page_search = $(this).data('page');
+      // Chiamata Ajax per risultati successivi ricerca dati
+      liveSearchCompany(page_search);
+       console.log('data.type', $(this));
+     }else {
+
+       // Chiamata ajax per i risultati successivi
+       getCompanies(page);
+     }
+
      // add color placeholder
      $(this).css('color', 'red');
+     console.log();
 
-     // Chiamata ajax per i risultati successivi
-     getCompanies(page);
+
 
 
    });
@@ -393,12 +405,13 @@ console.log('gestione_company.js');
   }
 
   // Function to lieve search results
-  function liveSearchCompany(liveQuery, mypage){
+  function liveSearchCompany(mypage){
 
+    var liveQuery = $('#search_company').val();
     // console.log(liveQuery);
     $('#search_comp_mess').hide();
 
-
+    console.log('live search');
     $.ajax({
 
       url: '/search/company',
@@ -406,8 +419,7 @@ console.log('gestione_company.js');
       // dataType: "JSON",
       success: function(results){
 
-        // Insert rendering page
-        $('.card_companies').html(results);
+          console.log('live search success', results);
         // Controllo presenza messsaggi
         var message = results.message;
         if (message) {
@@ -416,6 +428,8 @@ console.log('gestione_company.js');
           console.log('live search', results, results.message, $('.tbody_companies'));
         }
 
+        // Insert rendering page
+        $('.card_companies').html(results.html);
       },
       error: function(err){
 
