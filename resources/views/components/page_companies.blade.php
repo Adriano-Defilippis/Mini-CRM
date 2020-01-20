@@ -20,11 +20,27 @@
 </table>
 
 {{-- Navigatore risultati --}}
+{{$route}}
 <p>
-  @php
-    $counter_companies = 1;
-  @endphp
-  @for ($i=1; $i <= $count_companies; $i+= 10)
-     <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
-  @endfor
+  <div class="nav_bar_comp">
+    @php
+      $counter_companies = 1;
+    @endphp
+    @for ($i=1; $i <= $count_companies; $i+= 10)
+      @if ($route == 'home')
+
+        <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        {{$route}}
+
+      @elseif ($route == 'search.company')
+        
+        <span class="nav_companies_search" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        {{$route}}
+      @endif
+    @endfor
+
+
+
+  </div>
+
 </p>

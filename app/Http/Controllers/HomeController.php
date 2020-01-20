@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\Company;
+use Route;
 
 class HomeController extends Controller
 {
@@ -31,9 +32,11 @@ class HomeController extends Controller
         $employees = Employee::orderBy('created_at')
               ->paginate(10);
 
+        $route = \Request::route()->getName();
+
         $count_companies = Company::count();
         $count_employees = Employee::count();
-        return view('control_panel', compact('count_companies', 'count_employees', 'companies', 'employees'));
+        return view('control_panel', compact('count_companies', 'count_employees', 'companies', 'employees', 'route'));
         // return view('control_panel', compact('companies', 'employees','count_companies', 'count_employees'));
     }
 }

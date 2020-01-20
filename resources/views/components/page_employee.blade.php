@@ -37,12 +37,21 @@
     @endforeach
   </tbody>
 </table>
-{{-- Navigatore risultati --}}
+
+
+
 <p>
   @php
     $counter_employees = 1;
   @endphp
   @for ($i=1; $i <= $count_employees; $i+= 10)
-     <span class="nav_employees"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+    {{$route}}
+    @if ($route == 'home')
+      <span class="nav_employees"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+    @elseif ($route == 'search.employee')
+
+      <span class="nav_employees_search"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+
+    @endif
   @endfor
 </p>

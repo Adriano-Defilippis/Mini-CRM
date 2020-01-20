@@ -1,7 +1,3 @@
-@php
-
-@endphp
-
 
   <tr class="t_row_emp" employee-id="{{$employee -> id}}">
     <th>{{$employee -> first_name}}</th>

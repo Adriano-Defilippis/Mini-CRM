@@ -73,8 +73,9 @@ class AjaxEmployeeController extends Controller
           // Count copmany result query
           $output['count_emplyees'] = $count_employees;
           $output['employees'] = $employees;
+          $route = \Request::route()->getName();
 
-          $output['html'] = view('components.page_employee', compact('employees', 'count_employees'))
+          $output['html'] = view('components.page_employee', compact('employees', 'count_employees', 'route'))
                 ->render();
 
 

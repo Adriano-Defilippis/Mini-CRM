@@ -15,6 +15,8 @@ console.log('gestione_company.js');
 
      var query = $('#search_company').val();
      if (query.length > 0) {
+
+       $('#nav_bar_comp').remove();
        liveSearchCompany(page);
      }else {
        getCompanies(page);

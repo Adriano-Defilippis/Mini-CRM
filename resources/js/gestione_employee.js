@@ -23,6 +23,26 @@ $(document).on('click','.nav_employees', function(){
   liveSearchEmployee(page_emp);
   // Chiamata ajax per i risultati successivi
   getEmployees(page_emp);
+
+
+  // // add color placeholder
+  // $(this).css('color', 'red');
+  //
+  // if ($(this).data('type') == 'search_comp_paginate') {
+  //
+  //  page_search = $(this).data('page');
+  //
+  //  // Chiamata Ajax per risultati successivi ricerca dati
+  //  liveSearchCompany(page_search, $(this));
+  //
+  //
+  // }else {
+  //
+  //   page = $(this).data('page');
+  //   console.log('data.type', page);
+  //   // Chiamata ajax per i risultati successivi
+  //   getCompanies(page);
+  // }
 });
 
 // Azione click su delete Employee

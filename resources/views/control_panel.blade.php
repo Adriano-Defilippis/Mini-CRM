@@ -52,7 +52,7 @@
       <div class="card_employees card-body">
 
         @include('components.page_employee')
-
+        
       </div>
 
 

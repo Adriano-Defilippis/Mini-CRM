@@ -99,7 +99,8 @@ class AjaxCompanyController extends Controller
           // Count copmany result query
           $output['count_companies'] = $count_companies;
           $output['companies'] = $companies;
-          $output['html'] = view('components.page_companies', compact('companies', 'count_companies'))
+          $route = \Request::route()->getName();
+          $output['html'] = view('components.page_companies', compact('companies', 'count_companies', 'route'))
                 ->render();
 
 
@@ -136,11 +137,6 @@ class AjaxCompanyController extends Controller
     {
 
         $company = Company::findOrFail($id);
-        //
-        // $html = view('components.edit_company', compact('company'))
-        //     ->render();
-        // // return a JSON array of the companies list
-        // return response()->json($html);
 
         return view('components.edit_company', compact('company'));
     }
