@@ -37440,6 +37440,7 @@ function errorMessageForm(obj) {
 
 function liveSearchCompany(liveQuery, mypage) {
   // console.log(liveQuery);
+  $('#search_comp_mess').hide();
   $.ajax({
     url: '/search/company',
     data: {
@@ -37449,8 +37450,15 @@ function liveSearchCompany(liveQuery, mypage) {
     // dataType: "JSON",
     success: function success(results) {
       // Insert rendering page
-      $('.card_companies').html(results);
-      console.log('live search', results);
+      $('.card_companies').html(results); // Controllo presenza messsaggi
+
+      var message = results.message;
+
+      if (message) {
+        $('#search_comp_mess').fadeIn(1000);
+        $('#search_comp_mess li').text(message);
+        console.log('live search', results, results.message, $('.tbody_companies'));
+      }
     },
     error: function error(err) {
       console.log(err);

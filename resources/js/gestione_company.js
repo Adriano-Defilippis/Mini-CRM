@@ -392,6 +392,7 @@ console.log('gestione_company.js');
   function liveSearchCompany(liveQuery, mypage){
 
     // console.log(liveQuery);
+    $('#search_comp_mess').hide();
 
     $.ajax({
 
@@ -402,7 +403,14 @@ console.log('gestione_company.js');
 
         // Insert rendering page
         $('.card_companies').html(results);
-        console.log('live search', results);
+        // Controllo presenza messsaggi
+        var message = results.message;
+        if (message) {
+          $('#search_comp_mess').fadeIn(1000);
+          $('#search_comp_mess li').text(message);
+          console.log('live search', results, results.message, $('.tbody_companies'));
+        }
+
       },
       error: function(err){
 

@@ -108,16 +108,8 @@ class AjaxCompanyController extends Controller
 
         } else {
 
-          $output[] =  [
-
-             'message' =>      '<td>
-                                  No results for search
-                                </td>'
-
-            ];
-          $output[] = view('components.page_companies', compact('companies', 'count_companies', 'page'))
-                ->render();
-
+    
+            $output['message'] =  'No results for search';
         }
 
 

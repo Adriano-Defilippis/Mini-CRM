@@ -11374,3 +11374,7 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+#search_comp_mess {
+  display: none;
+}
+

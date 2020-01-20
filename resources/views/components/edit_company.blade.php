@@ -1,14 +1,14 @@
-<th data-id="">
+<th company-id="{{$company-> id}}">
   <input type="text" name="name" value="{{$company -> name}}">
 </th>
-<td>
+<td company-id="{{$company-> id}}">
   <input type="text" name="email" value="{{$company-> email}}">
 </td>
 <td class="container_logo">
   <img class="logo" src="storage/{{$company -> logo}}" alt="{{$company -> logo}}">
   <span class="logo_btn" data-id={{$company -> id}}>modifica</span>
 </td>
-<td>
+<td company-id="{{$company-> id}}">
   <input type="url" name="website"value="{{$company-> website}}">
 </td>
 <td>

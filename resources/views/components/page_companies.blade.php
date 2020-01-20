@@ -8,7 +8,7 @@
       <th scope="col">Actions</th>
     </tr>
   </thead>
-  <tbody class="tbody_companies">
+  <tbody class="tbody_companies" id="attach_message">
 
 
     @foreach ($companies as $company)
