@@ -84,54 +84,46 @@ class AjaxCompanyController extends Controller
                             ->orderBy('created_at')
                             ->get();
 
+
+
         } else {
 
           $companies = Company::orderBy('created_at')
                         ->paginate(10);
 
 
-          $page = 1;
+
 
         }
 
-        // Conteggio dei risultati
+
         $count_companies = $companies -> count();
 
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {
 
-          foreach ($companies as $company) {
 
-          $output[] = '
-
-
-          ';
-          }
+          $output[] = view('components.search_company', compact('companies', 'count_companies'))
+                ->render();
 
         } else {
 
-          $output = '
-            <td>
-              No results for search
-            </td>
+          $output[] =  [
 
-          ';
+             'message' =>      '<td>
+                                  No results for search
+                                </td>'
 
-          $companies = [];
-
-          $html = view('components.search_company', compact('companies', 'count_companies', 'message'))
+            ];
+          $output[] = view('components.page_companies', compact('companies', 'count_companies', 'page'))
                 ->render();
 
-          $list[]= $html;
-          $list[] = $message;
-
-          return response()->json($html);
         }
 
 
       }
 
-
+      return response()->json($output);
     }
 
     /**
