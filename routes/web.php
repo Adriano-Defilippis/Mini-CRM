@@ -34,6 +34,8 @@ Route::get('/employee/edit/{id}', 'EmployeeController@edit')->name('edit.employe
 Route::post('/employee/update/{id}', 'EmployeeController@update')->name('update.employee');
 // Route for live search_company
 Route::get('/search/company', 'AjaxCompanyController@liveSearch')->name('search.company');
+// Route for live search_company
+Route::get('/search/employee', 'AjaxEmployeeController@liveSearch')->name('search.employee');
 
 // Route for Ajax refreshcompany item after update
 Route::get('/refresh/company/{id}', 'AjaxCompanyController@refreshItem')->name('refresh.company');

@@ -3,6 +3,7 @@ console.log('gestione_company.js');
   // Pulisco campo input #search_company
     $('#search_company').val('');
    var page = 1;
+   var page_search = 1;
 
 
 
@@ -24,28 +25,24 @@ console.log('gestione_company.js');
    // Azione click su navigazione pagina
    $(document).on('click','.nav_companies', function(e){
 
-     // remove color placeholder
-     // $('.nav_companies').css('color', '');
-     console.log('log',$(this).data('type'));
+     // add color placeholder
+     $(this).css('color', 'red');
 
      if ($(this).data('type') == 'search_comp_paginate') {
 
-      var page_search = $(this).data('page');
+      page_search = $(this).data('page');
+
       // Chiamata Ajax per risultati successivi ricerca dati
-      liveSearchCompany(page_search);
-       console.log('data.type', $(this));
+      liveSearchCompany(page_search, $(this));
+
+
      }else {
 
+       page = $(this).data('page');
+       console.log('data.type', page);
        // Chiamata ajax per i risultati successivi
        getCompanies(page);
      }
-
-     // add color placeholder
-     $(this).css('color', 'red');
-     console.log();
-
-
-
 
    });
 
@@ -405,7 +402,7 @@ console.log('gestione_company.js');
   }
 
   // Function to lieve search results
-  function liveSearchCompany(mypage){
+  function liveSearchCompany(mypage, placeholder){
 
     var liveQuery = $('#search_company').val();
     // console.log(liveQuery);
@@ -430,6 +427,8 @@ console.log('gestione_company.js');
 
         // Insert rendering page
         $('.card_companies').html(results.html);
+        // add color placeholder
+        placeholder.css('color', 'red');
       },
       error: function(err){
 

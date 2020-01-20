@@ -1,4 +1,6 @@
-
+@php
+  use App\Employee;
+@endphp
 <th>
   <a href="{{route('show.company', $company-> id)}}">
     {{$company -> name}}

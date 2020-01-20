@@ -1,4 +1,4 @@
-<table class="table table_companies table-borderless">
+{{-- <table class="table table_companies table-borderless">
   <thead>
     <tr>
       <th scope="col">Name</th>
@@ -99,4 +99,4 @@
     });
 
   }
-</script>
+</script> --}}

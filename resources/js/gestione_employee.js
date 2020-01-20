@@ -2,10 +2,25 @@ var page_emp = 1;
 // Chiamata primi 10 risultati
 getEmployees(page_emp);
 
+// Azione Search Bar
+$(document).on('keyup', '#search_employee', function(e){
+
+  var query_emp = $('#search_employee').val();
+  if (query_emp.length > 0) {
+    console.log("LOOOOGGGG");
+
+    liveSearchEmployee(page_emp)
+  }else {
+
+    getEmployees(page_emp);
+  }
+});
+
 // Azione click su navigazione pagina
 $(document).on('click','.nav_employees', function(){
 
   page_emp = $(this).data('page');
+  liveSearchEmployee(page_emp);
   // Chiamata ajax per i risultati successivi
   getEmployees(page_emp);
 });
@@ -201,6 +216,42 @@ function refreshEmployeeTr(myId){
       $('tr[employee-id="' + myId +'"]').html(results);
       console.log('refresh', results);
 
+    },
+    error: function(err){
+
+      console.log(err);
+    }
+  });
+}
+
+// Function to lieve search results
+function liveSearchEmployee(mypage, placeholder){
+
+  var liveQueryEmployee = $('#search_employee').val();
+  // console.log(liveQuery);
+  $('#search_emp_mess').hide();
+
+  console.log('live search');
+  $.ajax({
+
+    url: '/search/employee',
+    data: { query : liveQueryEmployee, page:  mypage},
+    // dataType: "JSON",
+    success: function(results){
+
+        console.log('live search success', results);
+      // Controllo presenza messsaggi
+      var message = results.message;
+      if (message) {
+        $('#search_emp_mess').fadeIn(1000);
+        $('#search_emp_mess li').text(message);
+        console.log('live search', results, results.message, $('.employee_tbody'));
+      }
+
+      // Insert rendering page
+      $('.card_employees').html(results.html);
+      // add color placeholder
+      // placeholder.css('color', 'red');
     },
     error: function(err){
 

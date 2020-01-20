@@ -37157,7 +37157,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 console.log('gestione_company.js'); // Pulisco campo input #search_company
 
 $('#search_company').val('');
-var page = 1; // Chiamata ajax per primi 10 risultati Company
+var page = 1;
+var page_search = 1; // Chiamata ajax per primi 10 risultati Company
 
 getCompanies(page); // Chiamata ajax per primi 10 risultati Employee
 // Azione Search Bar
@@ -37173,23 +37174,19 @@ $(document).on('keyup', '#search_company', function (e) {
 }); // Azione click su navigazione pagina
 
 $(document).on('click', '.nav_companies', function (e) {
-  // remove color placeholder
-  // $('.nav_companies').css('color', '');
-  console.log('log', $(this).data('type'));
+  // add color placeholder
+  $(this).css('color', 'red');
 
   if ($(this).data('type') == 'search_comp_paginate') {
-    var page_search = $(this).data('page'); // Chiamata Ajax per risultati successivi ricerca dati
+    page_search = $(this).data('page'); // Chiamata Ajax per risultati successivi ricerca dati
 
-    liveSearchCompany(page_search);
-    console.log('data.type', $(this));
+    liveSearchCompany(page_search, $(this));
   } else {
-    // Chiamata ajax per i risultati successivi
+    page = $(this).data('page');
+    console.log('data.type', page); // Chiamata ajax per i risultati successivi
+
     getCompanies(page);
-  } // add color placeholder
-
-
-  $(this).css('color', 'red');
-  console.log();
+  }
 }); // Azione tasto back
 
 $(document).on('click', '.back_btn', function (e) {
@@ -37453,7 +37450,7 @@ function errorMessageForm(obj) {
 } // Function to lieve search results
 
 
-function liveSearchCompany(mypage) {
+function liveSearchCompany(mypage, placeholder) {
   var liveQuery = $('#search_company').val(); // console.log(liveQuery);
 
   $('#search_comp_mess').hide();
@@ -37477,7 +37474,9 @@ function liveSearchCompany(mypage) {
       } // Insert rendering page
 
 
-      $('.card_companies').html(results.html);
+      $('.card_companies').html(results.html); // add color placeholder
+
+      placeholder.css('color', 'red');
     },
     error: function error(err) {
       console.log(err);
@@ -37513,10 +37512,22 @@ function refreshTr(myId) {
 
 var page_emp = 1; // Chiamata primi 10 risultati
 
-getEmployees(page_emp); // Azione click su navigazione pagina
+getEmployees(page_emp); // Azione Search Bar
+
+$(document).on('keyup', '#search_employee', function (e) {
+  var query_emp = $('#search_employee').val();
+
+  if (query_emp.length > 0) {
+    console.log("LOOOOGGGG");
+    liveSearchEmployee(page_emp);
+  } else {
+    getEmployees(page_emp);
+  }
+}); // Azione click su navigazione pagina
 
 $(document).on('click', '.nav_employees', function () {
-  page_emp = $(this).data('page'); // Chiamata ajax per i risultati successivi
+  page_emp = $(this).data('page');
+  liveSearchEmployee(page_emp); // Chiamata ajax per i risultati successivi
 
   getEmployees(page_emp);
 }); // Azione click su delete Employee
@@ -37662,6 +37673,40 @@ function refreshEmployeeTr(myId) {
       // Insert rendering page
       $('tr[employee-id="' + myId + '"]').html(results);
       console.log('refresh', results);
+    },
+    error: function error(err) {
+      console.log(err);
+    }
+  });
+} // Function to lieve search results
+
+
+function liveSearchEmployee(mypage, placeholder) {
+  var liveQueryEmployee = $('#search_employee').val(); // console.log(liveQuery);
+
+  $('#search_emp_mess').hide();
+  console.log('live search');
+  $.ajax({
+    url: '/search/employee',
+    data: {
+      query: liveQueryEmployee,
+      page: mypage
+    },
+    // dataType: "JSON",
+    success: function success(results) {
+      console.log('live search success', results); // Controllo presenza messsaggi
+
+      var message = results.message;
+
+      if (message) {
+        $('#search_emp_mess').fadeIn(1000);
+        $('#search_emp_mess li').text(message);
+        console.log('live search', results, results.message, $('.employee_tbody'));
+      } // Insert rendering page
+
+
+      $('.card_employees').html(results.html); // add color placeholder
+      // placeholder.css('color', 'red');
     },
     error: function error(err) {
       console.log(err);

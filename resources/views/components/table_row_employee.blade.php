@@ -1,3 +1,7 @@
+@php
+  use App\Company;
+@endphp
+
 <th>{{$employee -> first_name}}</th>
 <td>{{$employee -> last_name}}</td>
 <td>

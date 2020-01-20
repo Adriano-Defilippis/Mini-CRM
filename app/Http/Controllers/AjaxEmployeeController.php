@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Employee;
+use App\Company;
+use DB;
 
 class AjaxEmployeeController extends Controller
 {
@@ -28,6 +30,64 @@ class AjaxEmployeeController extends Controller
       $employee = Employee::findOrFail($id);
       $html = view('components.table_row_employee', compact('employee'))->render();
       return response()->json($html);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function liveSearch(Request $request)
+    {
+      $list = [];
+      $page = $request -> get('page');
+      $list[] = $request -> get('query');
+
+      if ($request -> ajax()) {
+
+        $query = $request -> get('query');
+
+        if ($query != '') {
+
+          $current_page = $request->get('page');
+
+          $employees = DB::table('employees')
+                            ->where('first_name', 'like', '%'. $query . '%')
+                            ->orWhere('last_name', 'like', '%'. $query . '%')
+                            ->orWhere('email', 'like', '%'. $query . '%')
+                            ->orWhere('phone', 'like', '%'. $query . '%')
+                            ->orderBy('created_at')
+                            ->paginate(10);
+
+
+          // $employees->page(2);
+
+          $output['current_page'] = $current_page;
+        }
+
+        $count_employees = $employees -> total();
+
+        // Gestione output dopo la ricerca
+        if ($count_employees > 0) {
+
+          // Count copmany result query
+          $output['count_emplyees'] = $count_employees;
+          $output['employees'] = $employees;
+          $output['html'] = view('components.page_employee', compact('employees', 'count_employees'))
+                ->render();
+
+
+        } else {
+
+
+            $output['message'] =  'No results for search';
+        }
+
+
+      }
+
+      return response()->json($output);
     }
 
     /**

@@ -100,7 +100,7 @@ class AjaxCompanyController extends Controller
           // Count copmany result query
           $output['count_companies'] = $count_companies;
           $output['companies'] = $companies;
-          $output['html'] = view('components.search_company', compact('companies', 'count_companies'))
+          $output['html'] = view('components.page_companies', compact('companies', 'count_companies'))
                 ->render();
 
 
