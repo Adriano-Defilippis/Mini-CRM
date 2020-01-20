@@ -26,15 +26,24 @@
     @php
       $counter_companies = 1;
     @endphp
-    @for ($i=1; $i <= $count_companies; $i+= 10)
-      @if ($route == 'home')
+    @for ($i=1; $i <= $count_companies; $i++)
+      {{-- @if ($route == 'home')
 
-        <span class="nav_companies" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        <span class="nav_companies" data-type="comp_res" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
         {{$route}}
 
       @elseif ($route == 'search.company')
-        
-        <span class="nav_companies_search" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+
+        <span class="nav_companies" data-type="search_comp_res" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        {{$route}}
+      @endif --}}
+
+      @if ($route == 'search.company')
+
+        <span class="nav_companies" data-type="search_comp_res" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
+        {{$route}}
+      @else
+        <span class="nav_companies" data-type="comp_res" data-page="{{$counter_companies}}"> {{ $counter_companies++ }} </span>
         {{$route}}
       @endif
     @endfor

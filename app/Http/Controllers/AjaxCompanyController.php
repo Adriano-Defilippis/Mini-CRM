@@ -91,7 +91,7 @@ class AjaxCompanyController extends Controller
           $output['current_page'] = $current_page;
         }
 
-        $count_companies = $companies -> total();
+        $count_companies = $companies -> lastPage();
 
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {

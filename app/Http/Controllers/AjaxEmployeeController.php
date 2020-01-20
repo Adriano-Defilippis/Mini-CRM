@@ -65,7 +65,7 @@ class AjaxEmployeeController extends Controller
           $output['current_page'] = $current_page;
         }
 
-        $count_employees = $employees -> total();
+        $count_employees = $employees -> lastPage();
 
         // Gestione output dopo la ricerca
         if ($count_employees > 0) {

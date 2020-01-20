@@ -37166,9 +37166,11 @@ $(document).on('keyup', '#search_company', function (e) {
   var query = $('#search_company').val();
 
   if (query.length > 0) {
+    page_search = $(this).data('page');
     $('#nav_bar_comp').remove();
-    liveSearchCompany(page);
+    liveSearchCompany(page_search);
   } else {
+    page = $(this).data('page');
     getCompanies(page);
   }
 }); // Azione click su navigazione pagina
@@ -37176,17 +37178,21 @@ $(document).on('keyup', '#search_company', function (e) {
 $(document).on('click', '.nav_companies', function (e) {
   // add color placeholder
   $(this).css('color', 'red');
+  console.log('click nav', $(this).data('type'));
 
-  if ($(this).data('type') == 'search_comp_paginate') {
-    page_search = $(this).data('page'); // Chiamata Ajax per risultati successivi ricerca dati
-
-    liveSearchCompany(page_search, $(this));
-  } else {
+  if ($(this).data('type') == 'comp_res') {
     page = $(this).data('page');
-    console.log('data.type', page); // Chiamata ajax per i risultati successivi
+    query = $('#search_company').val(); // Chiamata ajax per i risultati successivi
 
     getCompanies(page);
+  } else if ($(this).data('type') == 'search_comp_res') {
+    page_search = $(this).data('page');
+    console.log('data.type', page); // Chiamata Ajax per risultati successivi ricerca dati
+
+    liveSearchCompany(page_search);
   }
+
+  console.log('page', page, page_search);
 }); // Azione tasto back
 
 $(document).on('click', '.back_btn', function (e) {
@@ -37390,10 +37396,11 @@ function destroyCompany(target_id, page) {
 
 
 function getCompanies(page) {
+  console.log('page', page);
   $.ajax({
     url: '/companies',
     data: {
-      'page': page
+      page: page
     },
     success: function success(data) {
       // Insert rendering page
@@ -37405,7 +37412,7 @@ function getCompanies(page) {
         } // console.log('page', key, item, $(this).text());
 
       });
-      console.log("log di get company ", data);
+      console.log("log di get company ", page);
     },
     error: function error(_error) {
       console.log("error", _error);

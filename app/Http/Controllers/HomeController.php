@@ -34,8 +34,8 @@ class HomeController extends Controller
 
         $route = \Request::route()->getName();
 
-        $count_companies = Company::count();
-        $count_employees = Employee::count();
+        $count_companies = $companies -> lastPage();
+        $count_employees = $employees -> lastPage();
         return view('control_panel', compact('count_companies', 'count_employees', 'companies', 'employees', 'route'));
         // return view('control_panel', compact('companies', 'employees','count_companies', 'count_employees'));
     }

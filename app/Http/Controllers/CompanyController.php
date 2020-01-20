@@ -62,18 +62,20 @@ class CompanyController extends Controller
     public function showMore(Request $request)
     {
 
-      $page = $request -> page;
+      $page = $request -> get('page');
 
 
       $companies = Company::orderBy('created_at')
             ->paginate(10);
 
       // $companies = Company::skip($skip)->take(10)->get();
-      $count_companies = Company::count();
+      $count_companies = $companies -> lastPage();
 
       $list = [];
 
-      $html = view('components.page_companies', compact('companies', 'count_companies', 'page'))
+      $route = \Request::route()->getName();
+
+      $html = view('components.page_companies', compact('companies', 'count_companies', 'page', 'route'))
           ->render();
 
       $list[] = $html;
