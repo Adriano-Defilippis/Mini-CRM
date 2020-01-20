@@ -86,23 +86,14 @@ class AjaxCompanyController extends Controller
 
 
 
-        } else {
-
-          $companies = Company::orderBy('created_at')
-                        ->paginate(10);
-
-
-
-
         }
-
 
         $count_companies = $companies -> count();
 
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {
 
-          
+
           $output[] = view('components.search_company', compact('companies', 'count_companies'))
                 ->render();
 
