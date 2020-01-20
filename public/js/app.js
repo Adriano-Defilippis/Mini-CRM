@@ -37488,10 +37488,11 @@ function errorMessageForm(obj) {
 } // Function to lieve search results
 
 
-function liveSearchCompany(mypage, placeholder) {
+function liveSearchCompany(mypage) {
   var liveQuery = $('#search_company').val(); // console.log(liveQuery);
 
   $('#search_comp_mess').hide();
+  console.log('page levesearch', mypage);
   console.log('live search');
   $.ajax({
     url: '/search/company',
@@ -37511,9 +37512,7 @@ function liveSearchCompany(mypage, placeholder) {
         console.log('live search', results, results.message, $('.tbody_companies'));
       } else {
         // Insert rendering page
-        $('.card_companies').html(results.html); // add color placeholder
-
-        placeholder.css('color', 'red');
+        $('.card_companies').html(results.html);
       }
     },
     error: function error(err) {
@@ -37548,7 +37547,8 @@ function refreshTr(myId) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var page_emp = 1; // Chiamata primi 10 risultati
+var page_emp = 1;
+var page_search = 1; // Chiamata primi 10 risultati
 // getEmployees(page_emp);
 // Azione Search Bar
 
@@ -37564,27 +37564,22 @@ $(document).on('keyup', '#search_employee', function (e) {
 }); // Azione click su navigazione pagina
 
 $(document).on('click', '.nav_employees', function () {
-  page_emp = $(this).data('page');
-  liveSearchEmployee(page_emp); // Chiamata ajax per i risultati successivi
+  // add color placeholder
+  $(this).css('color', 'red');
+  console.log('click nav', $(this).data('type'));
 
-  getEmployees(page_emp); // // add color placeholder
-  // $(this).css('color', 'red');
-  //
-  // if ($(this).data('type') == 'search_comp_paginate') {
-  //
-  //  page_search = $(this).data('page');
-  //
-  //  // Chiamata Ajax per risultati successivi ricerca dati
-  //  liveSearchCompany(page_search, $(this));
-  //
-  //
-  // }else {
-  //
-  //   page = $(this).data('page');
-  //   console.log('data.type', page);
-  //   // Chiamata ajax per i risultati successivi
-  //   getCompanies(page);
-  // }
+  if ($(this).data('type') == 'emp_res') {
+    page_emp = $(this).data('page'); // Chiamata ajax per i risultati successivi
+
+    getEmployees(page_emp);
+  } else if ($(this).data('type') == 'search_emp_emp') {
+    // Chiamata ajax per i risultati successivi
+    page_search = $(this).data('page');
+    liveSearchEmployee(page_search);
+    console.log('data.type', page);
+  }
+
+  console.log('page', page, page_search);
 }); // Azione click su delete Employee
 
 $(document).on('click', '.btn_delete_empl', function (e) {

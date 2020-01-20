@@ -44,14 +44,15 @@
   @php
     $counter_employees = 1;
   @endphp
-  @for ($i=1; $i <= $count_employees; $i+= 10)
-    {{$route}}
-    @if ($route == 'home')
-      <span class="nav_employees"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
-    @elseif ($route == 'search.employee')
+  @for ($i=1; $i <= $count_employees; $i++)
+    @if ($route == 'search.employee')
 
-      <span class="nav_employees_search"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
-
+      <span class="nav_employees" data-type="search_emp_emp"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+      {{$route}}
+    @else
+      <span class="nav_employees" data-type="emp_res" data-type="comp_res" data-page="{{$counter_employees}}"> {{ $counter_employees++ }} </span>
+      {{$route}}
     @endif
-  @endfor
+
+@endfor
 </p>

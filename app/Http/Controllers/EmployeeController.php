@@ -53,26 +53,19 @@ class EmployeeController extends Controller
     public function showMore(Request $request)
     {
 
-      // $page = $request -> page;
-
-      // $max = $page * 10;
-      // $skip = $max - 10;
-      //
-      // if ($page == 1) {
-      //
-      //   $skip = 0;
-      // }
-
       $employees = Employee::orderBy('first_name')
             ->paginate(10);
 
       // $employees = Employee::skip($skip)->take(10)->get();
-      $count_employees = Employee::count();
+
+      $count_employees = $employees -> lastPage();
+
+      $route = \Request::route()->getName();
       $list = [];
 
 
 
-      $html = view('components.page_employee', compact('employees', 'count_employees'))
+      $html = view('components.page_employee', compact('employees', 'count_employees', 'route'))
           ->render();
 
       $list[] = $html;

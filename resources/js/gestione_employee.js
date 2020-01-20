@@ -1,4 +1,5 @@
 var page_emp = 1;
+var page_search = 1;
 // Chiamata primi 10 risultati
 // getEmployees(page_emp);
 
@@ -19,30 +20,28 @@ $(document).on('keyup', '#search_employee', function(e){
 // Azione click su navigazione pagina
 $(document).on('click','.nav_employees', function(){
 
-  page_emp = $(this).data('page');
-  liveSearchEmployee(page_emp);
-  // Chiamata ajax per i risultati successivi
-  getEmployees(page_emp);
+
+  // add color placeholder
+  $(this).css('color', 'red');
+  console.log('click nav',$(this).data('type'));
+
+  if ($(this).data('type') == 'emp_res') {
+
+   page_emp = $(this).data('page');
+
+   // Chiamata ajax per i risultati successivi
+   getEmployees(page_emp);
 
 
-  // // add color placeholder
-  // $(this).css('color', 'red');
-  //
-  // if ($(this).data('type') == 'search_comp_paginate') {
-  //
-  //  page_search = $(this).data('page');
-  //
-  //  // Chiamata Ajax per risultati successivi ricerca dati
-  //  liveSearchCompany(page_search, $(this));
-  //
-  //
-  // }else {
-  //
-  //   page = $(this).data('page');
-  //   console.log('data.type', page);
-  //   // Chiamata ajax per i risultati successivi
-  //   getCompanies(page);
-  // }
+  }else if($(this).data('type') == 'search_emp_emp' ) {
+
+    // Chiamata ajax per i risultati successivi
+    page_search = $(this).data('page');
+    liveSearchEmployee(page_search);
+    console.log('data.type', page);
+
+  }
+  console.log('page', page, page_search);
 });
 
 // Azione click su delete Employee

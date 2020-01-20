@@ -457,12 +457,12 @@ console.log('gestione_company.js');
   }
 
   // Function to lieve search results
-  function liveSearchCompany(mypage, placeholder){
+  function liveSearchCompany(mypage){
 
     var liveQuery = $('#search_company').val();
     // console.log(liveQuery);
     $('#search_comp_mess').hide();
-
+    console.log('page levesearch', mypage);
     console.log('live search');
     $.ajax({
 
@@ -482,8 +482,6 @@ console.log('gestione_company.js');
 
           // Insert rendering page
           $('.card_companies').html(results.html);
-          // add color placeholder
-          placeholder.css('color', 'red');
         }
 
       },

@@ -85,7 +85,7 @@ class AjaxCompanyController extends Controller
                             ->orderBy('created_at')
                             ->paginate(10);
 
-
+          $companies -> currentPage($page);              
           // $companies->page(2);
 
           $output['current_page'] = $current_page;
@@ -97,7 +97,7 @@ class AjaxCompanyController extends Controller
         if ($count_companies > 0) {
 
           // Count copmany result query
-          $output['count_companies'] = $count_companies;
+          $output['count_companies'] = $companies -> total();
           $output['companies'] = $companies;
           $route = \Request::route()->getName();
           $output['html'] = view('components.page_companies', compact('companies', 'count_companies', 'route'))

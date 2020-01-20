@@ -63,28 +63,31 @@ class AjaxEmployeeController extends Controller
           // $employees->page(2);
 
           $output['current_page'] = $current_page;
+          $count_employees = $employees -> lastPage();
+
+
+          // Gestione output dopo la ricerca
+          if ($count_employees > 0) {
+
+            $count_employees = $employees -> lastPage();
+            
+            // Count copmany result query
+            $output['count_emplyees'] = $count_employees;
+            $output['employees'] = $employees;
+            $route = \Request::route()->getName();
+
+            $output['html'] = view('components.page_employee', compact('employees', 'count_employees', 'route'))
+                  ->render();
+
+
+          } else {
+
+
+              $output['message'] =  'No results for search';
+
+          }
+
         }
-
-        $count_employees = $employees -> lastPage();
-
-        // Gestione output dopo la ricerca
-        if ($count_employees > 0) {
-
-          // Count copmany result query
-          $output['count_emplyees'] = $count_employees;
-          $output['employees'] = $employees;
-          $route = \Request::route()->getName();
-
-          $output['html'] = view('components.page_employee', compact('employees', 'count_employees', 'route'))
-                ->render();
-
-
-        } else {
-
-
-            $output['message'] =  'No results for search';
-        }
-
 
       }
 
