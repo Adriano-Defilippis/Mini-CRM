@@ -52,13 +52,12 @@ class AjaxEmployeeController extends Controller
 
           $current_page = $request->get('page');
 
-          $employees = DB::table('employees')
-                            ->where('first_name', 'like', '%'. $query . '%')
-                            ->orWhere('last_name', 'like', '%'. $query . '%')
-                            ->orWhere('email', 'like', '%'. $query . '%')
-                            ->orWhere('phone', 'like', '%'. $query . '%')
-                            ->orderBy('created_at')
-                            ->paginate(10);
+          $employees = Employee::where('first_name', 'like', '%'. $query . '%')
+                                ->orWhere('last_name', 'like', '%'. $query . '%')
+                                ->orWhere('email', 'like', '%'. $query . '%')
+                                ->orWhere('phone', 'like', '%'. $query . '%')
+                                ->orderBy('created_at')
+                                ->paginate(10);
 
 
           // $employees->page(2);
@@ -74,6 +73,7 @@ class AjaxEmployeeController extends Controller
           // Count copmany result query
           $output['count_emplyees'] = $count_employees;
           $output['employees'] = $employees;
+
           $output['html'] = view('components.page_employee', compact('employees', 'count_employees'))
                 ->render();
 

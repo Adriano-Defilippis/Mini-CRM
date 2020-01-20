@@ -1,6 +1,6 @@
 var page_emp = 1;
 // Chiamata primi 10 risultati
-getEmployees(page_emp);
+// getEmployees(page_emp);
 
 // Azione Search Bar
 $(document).on('keyup', '#search_employee', function(e){

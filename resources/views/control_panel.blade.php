@@ -22,6 +22,7 @@
       <div class="card_companies card-body">
 
         {{-- Component for table body results --}}
+        @include('components.page_companies')
 
       </div>
 
@@ -50,7 +51,7 @@
       {{-- CARD EMPLOYEES --}}
       <div class="card_employees card-body">
 
-        {{-- TAble for Employee result, Ajax Call --}}
+        @include('components.page_employee')
 
       </div>
 

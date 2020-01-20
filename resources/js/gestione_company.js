@@ -8,7 +8,7 @@ console.log('gestione_company.js');
 
 
    // Chiamata ajax per primi 10 risultati Company
-   getCompanies(page);
+   // getCompanies(page);
 
    // Azione Search Bar
    $(document).on('keyup', '#search_company', function(e){
@@ -467,12 +467,14 @@ console.log('gestione_company.js');
           $('#search_comp_mess').fadeIn(1000);
           $('#search_comp_mess li').text(message);
           console.log('live search', results, results.message, $('.tbody_companies'));
+        }else {
+
+          // Insert rendering page
+          $('.card_companies').html(results.html);
+          // add color placeholder
+          placeholder.css('color', 'red');
         }
 
-        // Insert rendering page
-        $('.card_companies').html(results.html);
-        // add color placeholder
-        placeholder.css('color', 'red');
       },
       error: function(err){
 

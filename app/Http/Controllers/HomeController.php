@@ -26,12 +26,14 @@ class HomeController extends Controller
     public function index()
     {
 
-        // $companies = Company::all()->take(10);
-        // $employees = Employee::all()->take(10);
+        $companies = Company::orderBy('created_at')
+              ->paginate(10);
+        $employees = Employee::orderBy('created_at')
+              ->paginate(10);
 
         $count_companies = Company::count();
         $count_employees = Employee::count();
-        return view('control_panel', compact('count_companies', 'count_employees'));
+        return view('control_panel', compact('count_companies', 'count_employees', 'companies', 'employees'));
         // return view('control_panel', compact('companies', 'employees','count_companies', 'count_employees'));
     }
 }

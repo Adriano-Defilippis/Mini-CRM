@@ -37159,8 +37159,8 @@ console.log('gestione_company.js'); // Pulisco campo input #search_company
 $('#search_company').val('');
 var page = 1;
 var page_search = 1; // Chiamata ajax per primi 10 risultati Company
-
-getCompanies(page); // Azione Search Bar
+// getCompanies(page);
+// Azione Search Bar
 
 $(document).on('keyup', '#search_company', function (e) {
   var query = $('#search_company').val();
@@ -37501,12 +37501,12 @@ function liveSearchCompany(mypage, placeholder) {
         $('#search_comp_mess').fadeIn(1000);
         $('#search_comp_mess li').text(message);
         console.log('live search', results, results.message, $('.tbody_companies'));
-      } // Insert rendering page
+      } else {
+        // Insert rendering page
+        $('.card_companies').html(results.html); // add color placeholder
 
-
-      $('.card_companies').html(results.html); // add color placeholder
-
-      placeholder.css('color', 'red');
+        placeholder.css('color', 'red');
+      }
     },
     error: function error(err) {
       console.log(err);
@@ -37541,8 +37541,8 @@ function refreshTr(myId) {
 /***/ (function(module, exports) {
 
 var page_emp = 1; // Chiamata primi 10 risultati
-
-getEmployees(page_emp); // Azione Search Bar
+// getEmployees(page_emp);
+// Azione Search Bar
 
 $(document).on('keyup', '#search_employee', function (e) {
   var query_emp = $('#search_employee').val();

@@ -79,8 +79,7 @@ class AjaxCompanyController extends Controller
 
           $current_page = $request->get('page');
 
-          $companies = DB::table('companies')
-                            ->where('name', 'like', '%'. $query . '%')
+          $companies = Company::where('name', 'like', '%'. $query . '%')
                             ->orWhere('email', 'like', '%'. $query . '%')
                             ->orWhere('website', 'like', '%'. $query . '%')
                             ->orderBy('created_at')
