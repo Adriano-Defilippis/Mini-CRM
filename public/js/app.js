@@ -37164,7 +37164,12 @@ getCompanies(page); // Chiamata ajax per primi 10 risultati Employee
 
 $(document).on('keyup', '#search_company', function (e) {
   var query = $('#search_company').val();
-  liveSearchCompany(query, page);
+
+  if (query.length > 0) {
+    liveSearchCompany(query, page);
+  } else {
+    getCompanies(page);
+  }
 }); // Azione click su navigazione pagina
 
 $(document).on('click', '.nav_companies', function (e) {

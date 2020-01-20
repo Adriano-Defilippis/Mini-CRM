@@ -15,7 +15,11 @@ console.log('gestione_company.js');
 
      var query = $('#search_company').val();
 
-     liveSearchCompany(query, page);
+     if (query.length > 0) {
+       liveSearchCompany(query, page);
+     }else {
+       getCompanies(page);
+     }
    })
 
    // Azione click su navigazione pagina
@@ -393,6 +397,7 @@ console.log('gestione_company.js');
 
     // console.log(liveQuery);
     $('#search_comp_mess').hide();
+
 
     $.ajax({
 

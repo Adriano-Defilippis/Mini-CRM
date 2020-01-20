@@ -102,13 +102,13 @@ class AjaxCompanyController extends Controller
         // Gestione output dopo la ricerca
         if ($count_companies > 0) {
 
-
+          
           $output[] = view('components.search_company', compact('companies', 'count_companies'))
                 ->render();
 
         } else {
 
-    
+
             $output['message'] =  'No results for search';
         }
 
