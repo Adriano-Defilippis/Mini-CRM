@@ -16,11 +16,7 @@
     @foreach ($employees as $employee)
 
     <tr class="t_row_emp" employee-id="{{$employee -> id}}">
-
       @include('components.table_row_employee')
-      {{-- <th>{{$employee -> first_name}}</th> --}}
-      {{-- <td>{{$employee -> last_name}}</td> --}}
-
     </tr>
 
 

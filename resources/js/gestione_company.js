@@ -9,7 +9,6 @@ console.log('gestione_company.js');
 
    // Chiamata ajax per primi 10 risultati Company
    getCompanies(page);
-   // Chiamata ajax per primi 10 risultati Employee
 
    // Azione Search Bar
    $(document).on('keyup', '#search_company', function(e){
@@ -163,15 +162,30 @@ console.log('gestione_company.js');
      updateCompany(id_toDelete, page);
    });
 
+   // Azione su click modifica immagine
+   $(document).on('click','.logo_btn', function(e){
+
+
+     // Chiamata ajax form immagine
+
+     var id = $(this).data('id');
+     var append = $(this).parent();
+     var page = append.data('page');
+     console.log(page);
+     getFormImg(id, append, page);
+
+   });
+
+
    // Azione submit invio form update logo
    $(document).on('click', '.update_logo_btn', function(e){
 
      e.preventDefault();
      var id = $(this).data('id');
-     var parent = $(this).parent();
-     var page = parent.parent().data('page');
-     console.log('page', page, id, $(this));
-     updateLogo(id,page, e);
+     // var parent = $(this).parent();
+     // var page = parent.parent().data('page');
+     // console.log('page', page, id, $(this));
+     updateLogo(id);
    });
 
 
@@ -343,7 +357,37 @@ console.log('gestione_company.js');
 
   }
 
-  function updateLogo(id, e){
+  // Function for form image ajax
+  function getFormImg(id, append, page){
+
+    // Form data JS Object
+    var myFormData = new FormData();
+    myFormData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
+    myFormData.append('page', page);
+
+    $.ajax({
+
+      url: '/form/' + id,
+      type: "POST",
+      contentType: false,
+      processData: false,
+      data: myFormData,
+      success: function(data){
+
+        // Insert rendering page
+        append.html(data);
+
+        console.log("log di data ",data);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+
+  }
+
+  function updateLogo(id){
 
       var token = $('meta[name="csrf-token"]').attr('content');
 
@@ -362,10 +406,10 @@ console.log('gestione_company.js');
         data: formData,
         success: function(data){
 
-          console.log("data", data);
+          console.log("data", data, id);
           // Insert rendering page
           // $('.card_companies').html(data);
-          // e.preventDefault();
+
           refreshTr(id);
           console.log('data_page', page);
         },
@@ -449,7 +493,7 @@ console.log('gestione_company.js');
         // Insert rendering page
         $('tr[company-id="' + myId +'"]').html(results);
         console.log('refresh');
-        console.log('refrssch',$('.t_row_emp[data-id="' + myId +'"]'), results );
+        console.log('refrssch',$('.t_row[company-id="' + myId +'"]'), results );
       },
       error: function(err){
 
