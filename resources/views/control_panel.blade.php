@@ -17,7 +17,7 @@
       </div>
       <input id="search_company" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <ul id="search_comp_mess" class="list-group list-group-flush">
-        <li class="list-group-item">Cras justo odio</li>
+        <li class="list-group-item"></li>
       </ul>
       <div class="card_companies card-body">
 
@@ -45,14 +45,14 @@
       </div>
 
       <input id="search_employee" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <ul id="search_comp_mess" class="list-group list-group-flush">
-        <li class="list-group-item">Cras justo odio</li>
+      <ul id="search_emp_mess" class="list-group list-group-flush">
+        <li class="list-group-item"></li>
       </ul>
       {{-- CARD EMPLOYEES --}}
       <div class="card_employees card-body">
 
         @include('components.page_employee')
-        
+
       </div>
 
 

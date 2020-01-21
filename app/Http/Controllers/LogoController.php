@@ -51,16 +51,20 @@ public function submit(LogoRequest $request, $id) {
   // Search item to upload image
   $company = Company::findOrFail($id);
 
-	// Name for file
-  $targetFile = str_replace(" ", "_", $company -> name) . "_" . $id . now() . ".jpg";
-	// $targetFile = $company -> logo;
-
-	$validatedLogo = $request -> validated();
-
   $file = $request -> file('logo');
 
   // Upload file in storage folder
   if ($file) {
+
+		$validatedLogo = $request -> validated();
+
+		// Name for file
+		$targetFile = str_replace(" ", "_", $company -> name)
+										. "-"
+										. $id
+										.	"-"
+										. str_replace(" ", "_", now())
+										. $file->getClientOriginalExtension();
 
 			\File::delete( public_path('storage/') . $company -> logo );
 

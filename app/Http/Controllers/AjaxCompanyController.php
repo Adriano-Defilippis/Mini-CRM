@@ -85,7 +85,7 @@ class AjaxCompanyController extends Controller
                             ->orderBy('created_at')
                             ->paginate(10);
 
-          $companies -> currentPage($page);              
+          $companies -> currentPage($page);
           // $companies->page(2);
 
           $output['current_page'] = $current_page;
@@ -94,7 +94,11 @@ class AjaxCompanyController extends Controller
         $count_companies = $companies -> lastPage();
 
         // Gestione output dopo la ricerca
-        if ($count_companies > 0) {
+        if ($companies -> total() == 0) {
+
+          $output['message'] =  'No results for search';
+
+        } else {
 
           // Count copmany result query
           $output['count_companies'] = $companies -> total();
@@ -103,11 +107,6 @@ class AjaxCompanyController extends Controller
           $output['html'] = view('components.page_companies', compact('companies', 'count_companies', 'route'))
                 ->render();
 
-
-        } else {
-
-
-            $output['message'] =  'No results for search';
         }
 
 

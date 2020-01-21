@@ -67,10 +67,15 @@ class AjaxEmployeeController extends Controller
 
 
           // Gestione output dopo la ricerca
-          if ($count_employees > 0) {
+          if ($employees -> total() == 0) {
+
+            $output['message'] =  'No results for search';
+
+
+          } else {
 
             $count_employees = $employees -> lastPage();
-            
+
             // Count copmany result query
             $output['count_emplyees'] = $count_employees;
             $output['employees'] = $employees;
@@ -79,11 +84,6 @@ class AjaxEmployeeController extends Controller
             $output['html'] = view('components.page_employee', compact('employees', 'count_employees', 'route'))
                   ->render();
 
-
-          } else {
-
-
-              $output['message'] =  'No results for search';
 
           }
 

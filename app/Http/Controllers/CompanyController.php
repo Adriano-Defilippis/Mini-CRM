@@ -105,8 +105,13 @@ class CompanyController extends Controller
       if ($file) {
 
 
-          // Name for file
-          $targetFile = str_replace(" ", "_", $request-> name) . "_" . now() . ".jpg";
+        // Name for file
+        $targetFile = str_replace(" ", "_", $validatedCompany['name'])
+                        . "-"
+                        . $id
+                        .	"-"
+                        . str_replace(" ", "_", now())
+                        . $file->getClientOriginalExtension();
 
           $targetPath = 'storage';
 
@@ -218,9 +223,14 @@ class CompanyController extends Controller
 
       if ($file) {
 
-        // Search file to delete in storage folder
-        // \File::delete('public/storage' ,$company_to_update -> logo);
-        // \File::delete(public_path($company_to_update -> logo));
+        // Name for file
+    		$targetFile = str_replace(" ", "_", $company_to_update -> name)
+    										. "-"
+    										. $id
+    										.	"-"
+    										. str_replace(" ", "_", now())
+    										. $file->getClientOriginalExtension();
+
         \File::delete( public_path('storage/') . $company_to_update -> logo );
 
         // Name for file
