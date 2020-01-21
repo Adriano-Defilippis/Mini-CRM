@@ -7,6 +7,7 @@ use \FileUploader;
 use App\Company;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\LogoRequest;
+use Illuminate\Support\Facades\Storage;
 
 class LogoController extends Controller
 {
@@ -46,19 +47,13 @@ class LogoController extends Controller
  */
 public function submit(LogoRequest $request, $id) {
 
-	// $validatedLogo = $request -> validate();
 
   // Search item to upload image
   $company = Company::findOrFail($id);
 
-  // Name for file
-  $targetFile = str_replace(" ", "_", $company -> name) . "_" . $company-> id . ".jpg";
-
-
-  // FileUpload
-	// $validatedLogo = $request -> validate([
-	// 	'logo' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:4048'
-	// ]);
+	// Name for file
+  $targetFile = str_replace(" ", "_", $company -> name) . "_" . $id . now() . ".jpg";
+	// $targetFile = $company -> logo;
 
 	$validatedLogo = $request -> validated();
 
@@ -66,6 +61,9 @@ public function submit(LogoRequest $request, $id) {
 
   // Upload file in storage folder
   if ($file) {
+
+			\File::delete( public_path('storage/') . $company -> logo );
+
 
       $targetPath = 'storage';
 
@@ -80,7 +78,12 @@ public function submit(LogoRequest $request, $id) {
   // Upload database logo path
   $company->update($validatedLogo);
 
-  return response()->json();
+	$html = [];
+	$html[] = $targetFile;
+	$html[] = $company;
+	// $hmlt['public path'] = \File::public_path();
+
+  return response()->json($html);
 
 
 }

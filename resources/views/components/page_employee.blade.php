@@ -47,12 +47,15 @@
   @for ($i=1; $i <= $count_employees; $i++)
     @if ($route == 'search.employee')
 
-      <span class="nav_employees" data-type="search_emp_emp"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+      <span class="nav_employees" data-type="search_emp_page"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
       {{$route}}
+
+    @elseif ($route == 'show.company')
+      {{$route}}
+        <span class="nav_employees" data-type="show_more_related_emp"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
     @else
       <span class="nav_employees" data-type="emp_res" data-type="comp_res" data-page="{{$counter_employees}}"> {{ $counter_employees++ }} </span>
       {{$route}}
     @endif
-
 @endfor
 </p>

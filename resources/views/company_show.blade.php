@@ -2,18 +2,14 @@
 
 @section('content')
 
-  <h2>{{$company -> name}}</h2>
+  {{-- Box Risultati Employee collegati ad Id Company --}}
+  <div class="card_employees card-body">
 
 
-  @foreach ($company -> employees as $employee)
-    <ul>
-      <li>{{$employee-> first_name}}</li>
-      <li>{{$employee-> last_name}}</li>
-      <li>{{$employee-> email}}</li>
-      <li>{{$employee-> phone}}</li>
-      <li>{{$employee-> company -> name}}</li>
-    </ul>
-  @endforeach
+    @include('components.page_employee')
 
+
+
+  </div>
 
 @endsection

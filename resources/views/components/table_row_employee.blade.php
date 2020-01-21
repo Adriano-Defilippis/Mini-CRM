@@ -1,5 +1,5 @@
 
-  <tr class="t_row_emp" employee-id="{{$employee -> id}}">
+  {{-- <tr class="t_row_emp" employee-id="{{$employee -> id}}"> --}}
     <th>{{$employee -> first_name}}</th>
     <td>{{$employee -> last_name}}</td>
     <td>
@@ -13,4 +13,4 @@
       <button data-id="{{$employee -> id}}" type="button" class="btn_edit_empl btn btn-light">Edit</button>
       <button data-id="{{$employee -> id}}" type="button" class="btn_delete_empl btn btn-danger">Delete</button>
     </td>
-  </tr>
+  {{-- </tr> --}}

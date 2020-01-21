@@ -33,12 +33,12 @@ $(document).on('click','.nav_employees', function(){
    getEmployees(page_emp);
 
 
-  }else if($(this).data('type') == 'search_emp_emp' ) {
+ }else if($(this).data('type') == 'search_emp_page' ) {
 
     // Chiamata ajax per i risultati successivi
     page_search = $(this).data('page');
     liveSearchEmployee(page_search);
-    console.log('data.type', page);
+    console.log('data.type', page_search);
 
   }
   console.log('page', page, page_search);

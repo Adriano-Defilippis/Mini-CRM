@@ -4,6 +4,7 @@ console.log('gestione_company.js');
     $('#search_company').val('');
    var page = 1;
    var page_search = 1;
+   var page_show = 1;
 
 
 
@@ -42,16 +43,18 @@ console.log('gestione_company.js');
       // Chiamata ajax per i risultati successivi
       getCompanies(page);
 
+    }
 
-    }else if($(this).data('type') == 'search_comp_res' ) {
+
+    else if($(this).data('type') == 'search_comp_res' ) {
 
        page_search = $(this).data('page');
-       console.log('data.type', page);
+       console.log('data.type', page_search);
 
        // Chiamata Ajax per risultati successivi ricerca dati
        liveSearchCompany(page_search);
      }
-     console.log('page', page, page_search);
+     console.log('page', page_search);
    });
 
 
@@ -191,7 +194,7 @@ console.log('gestione_company.js');
    // Azione submit invio form update logo
    $(document).on('click', '.update_logo_btn', function(e){
 
-     e.preventDefault();
+
      var id = $(this).data('id');
      updateLogo(id);
    });
@@ -365,6 +368,40 @@ console.log('gestione_company.js');
 
   }
 
+  // Function to get risultati Employee rspetto alla compagnia
+  function getRelatedEmp(page){
+
+    console.log('page', page);
+    $.ajax({
+
+      url: '/company/relatedemp',
+      data: {
+        page: page
+      },
+      success: function(data){
+
+        // Insert rendering page
+        $('.card_companies').html(data);
+
+        // Aggiungo colore stile segnaposto pagina
+        $('.nav_companies').each(function(key, item){
+
+          if ($(this).text() == page) {
+
+            $(this).css('color', 'red');
+          }
+          // console.log('page', key, item, $(this).text());
+        });
+
+        console.log("log di get company ", page);
+      },
+
+      error: function(error){
+        console.log("error",error);
+      }
+    });
+  };
+
   // Function for form image ajax
   function getFormImg(id, append, page){
 
@@ -400,10 +437,12 @@ console.log('gestione_company.js');
       var token = $('meta[name="csrf-token"]').attr('content');
 
       var logo_file = $('#update_logo').get()[0].files[0];
+      // var
       // Form data JS Object
       var formData = new FormData();
       formData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
       formData.append('logo', logo_file);
+
 
       $.ajax({
 
@@ -414,7 +453,7 @@ console.log('gestione_company.js');
         data: formData,
         success: function(data){
 
-          console.log("data", data, id);
+          console.log("dataddddddddddddddddddddd", data, id);
           // Insert rendering page
           // $('.card_companies').html(data);
 
@@ -495,13 +534,16 @@ console.log('gestione_company.js');
     $.ajax({
 
       url: '/refresh/company/' + myId,
-      dataType: "JSON",
+      // dataType: "JSON",
       success: function(results){
 
         // Insert rendering page
         $('tr[company-id="' + myId +'"]').html(results);
+        // var src = $('tr[company-id="' + myId +'"] .container_logo .logo').attr('src');
+
+        // src = results.src;
         console.log('refresh');
-        console.log('refrssch',$('.t_row[company-id="' + myId +'"]'), results );
+        console.log('refrssch',$('.t_row[company-id="' + myId +'"]'), results, $('.t_row[company-id="' + myId +'"] td img.logo') );
       },
       error: function(err){
 

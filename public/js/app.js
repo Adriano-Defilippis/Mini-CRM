@@ -37097,6 +37097,8 @@ function init() {
 
   __webpack_require__(/*! ./gestione_employee */ "./resources/js/gestione_employee.js");
 
+  __webpack_require__(/*! ./gestione_show_company */ "./resources/js/gestione_show_company.js");
+
   console.log('app.js');
 }
 
@@ -37158,7 +37160,8 @@ console.log('gestione_company.js'); // Pulisco campo input #search_company
 
 $('#search_company').val('');
 var page = 1;
-var page_search = 1; // Chiamata ajax per primi 10 risultati Company
+var page_search = 1;
+var page_show = 1; // Chiamata ajax per primi 10 risultati Company
 // getCompanies(page);
 // Azione Search Bar
 
@@ -37187,12 +37190,12 @@ $(document).on('click', '.nav_companies', function (e) {
     getCompanies(page);
   } else if ($(this).data('type') == 'search_comp_res') {
     page_search = $(this).data('page');
-    console.log('data.type', page); // Chiamata Ajax per risultati successivi ricerca dati
+    console.log('data.type', page_search); // Chiamata Ajax per risultati successivi ricerca dati
 
     liveSearchCompany(page_search);
   }
 
-  console.log('page', page, page_search);
+  console.log('page', page_search);
 }); // Azione tasto back
 
 $(document).on('click', '.back_btn', function (e) {
@@ -37284,7 +37287,6 @@ $(document).on('click', '.logo_btn', function (e) {
 }); // Azione submit invio form update logo
 
 $(document).on('click', '.update_logo_btn', function (e) {
-  e.preventDefault();
   var id = $(this).data('id');
   updateLogo(id);
 }); // Mostra nascondi EditForm Company
@@ -37415,8 +37417,35 @@ function getCompanies(page) {
       console.log("error", _error);
     }
   });
-} // Function for form image ajax
+} // Function to get risultati Employee rspetto alla compagnia
 
+
+function getRelatedEmp(page) {
+  console.log('page', page);
+  $.ajax({
+    url: '/company/relatedemp',
+    data: {
+      page: page
+    },
+    success: function success(data) {
+      // Insert rendering page
+      $('.card_companies').html(data); // Aggiungo colore stile segnaposto pagina
+
+      $('.nav_companies').each(function (key, item) {
+        if ($(this).text() == page) {
+          $(this).css('color', 'red');
+        } // console.log('page', key, item, $(this).text());
+
+      });
+      console.log("log di get company ", page);
+    },
+    error: function error(_error2) {
+      console.log("error", _error2);
+    }
+  });
+}
+
+; // Function for form image ajax
 
 function getFormImg(id, append, page) {
   // Form data JS Object
@@ -37434,15 +37463,16 @@ function getFormImg(id, append, page) {
       append.html(data);
       console.log("log di data ", data);
     },
-    error: function error(_error2) {
-      console.log("error", _error2);
+    error: function error(_error3) {
+      console.log("error", _error3);
     }
   });
 }
 
 function updateLogo(id) {
   var token = $('meta[name="csrf-token"]').attr('content');
-  var logo_file = $('#update_logo').get()[0].files[0]; // Form data JS Object
+  var logo_file = $('#update_logo').get()[0].files[0]; // var
+  // Form data JS Object
 
   var formData = new FormData();
   formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
@@ -37454,7 +37484,7 @@ function updateLogo(id) {
     processData: false,
     data: formData,
     success: function success(data) {
-      console.log("data", data, id); // Insert rendering page
+      console.log("dataddddddddddddddddddddd", data, id); // Insert rendering page
       // $('.card_companies').html(data);
 
       refreshTr(id);
@@ -37522,12 +37552,14 @@ function liveSearchCompany(mypage) {
 function refreshTr(myId) {
   $.ajax({
     url: '/refresh/company/' + myId,
-    dataType: "JSON",
+    // dataType: "JSON",
     success: function success(results) {
       // Insert rendering page
-      $('tr[company-id="' + myId + '"]').html(results);
+      $('tr[company-id="' + myId + '"]').html(results); // var src = $('tr[company-id="' + myId +'"] .container_logo .logo').attr('src');
+      // src = results.src;
+
       console.log('refresh');
-      console.log('refrssch', $('.t_row[company-id="' + myId + '"]'), results);
+      console.log('refrssch', $('.t_row[company-id="' + myId + '"]'), results, $('.t_row[company-id="' + myId + '"] td img.logo'));
     },
     error: function error(err) {
       console.log(err);
@@ -37569,11 +37601,11 @@ $(document).on('click', '.nav_employees', function () {
     page_emp = $(this).data('page'); // Chiamata ajax per i risultati successivi
 
     getEmployees(page_emp);
-  } else if ($(this).data('type') == 'search_emp_emp') {
+  } else if ($(this).data('type') == 'search_emp_page') {
     // Chiamata ajax per i risultati successivi
     page_search = $(this).data('page');
     liveSearchEmployee(page_search);
-    console.log('data.type', page);
+    console.log('data.type', page_search);
   }
 
   console.log('page', page, page_search);
@@ -37760,6 +37792,17 @@ function liveSearchEmployee(mypage, placeholder) {
     }
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/gestione_show_company.js":
+/*!***********************************************!*\
+  !*** ./resources/js/gestione_show_company.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 

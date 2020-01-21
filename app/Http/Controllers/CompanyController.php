@@ -8,6 +8,7 @@ use App\Employee;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CompanyRequest;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -103,9 +104,9 @@ class CompanyController extends Controller
       // Upload file in storage folder
       if ($file) {
 
-          $count_id = Company::all()->last()-> id + 1;
+
           // Name for file
-          $targetFile = str_replace(" ", "_", $request-> name) . "_" . $count_id . ".jpg";
+          $targetFile = str_replace(" ", "_", $request-> name) . "_" . now() . ".jpg";
 
           $targetPath = 'storage';
 
@@ -164,8 +165,28 @@ class CompanyController extends Controller
     public function show($id)
       {
           $company = Company::findOrFail($id);
+          // Related Employee of this Copany Id
+          $employees = Employee::where('company_id', $id)->paginate(10);
+           $count_employees = 10;
+           $route = \Request::route()->getName();
 
-          return view('company_show', compact('company'));
+           if ($route == 'show_more_related_employees') {
+
+             $html = response()->json(view('components.page_employee', compact('company', 'employees', 'count_employees', 'route')));
+           }else{
+
+             $html = view('company_show', compact('company', 'employees', 'count_employees', 'route'));
+           }
+
+          return $html;
+
+          // $employees = Employee::orderBy('created_at')
+          //       ->paginate(10);
+          // $route = \Request::route()->getName();
+          // $count_employees = $employees -> lastPage();
+          // $output = view('components.page_employee', compact('employees', 'count_employees', 'route'))
+          //       ->render();
+          // return $output;
       }
 
     /**
@@ -192,12 +213,18 @@ class CompanyController extends Controller
       $validatedCompany = $request -> validated();
       $company_to_update = Company::findOrFail($id);
 
+
       $file = $request -> file('logo');
 
       if ($file) {
 
+        // Search file to delete in storage folder
+        // \File::delete('public/storage' ,$company_to_update -> logo);
+        // \File::delete(public_path($company_to_update -> logo));
+        \File::delete( public_path('storage/') . $company_to_update -> logo );
+
         // Name for file
-        $targetFile = str_replace(" ", "_", $validatedCompany['name']) . "_" . $id . ".jpg";
+        $targetFile = $company_to_update -> logo;
         $list[] = $request -> logo;
 
         $targetPath = 'storage';
@@ -214,6 +241,7 @@ class CompanyController extends Controller
 
       $list[] = $validatedCompany;
       $list[] = $company_to_update;
+      $list['public_path'] = public_path('storage/') . $company_to_update -> logo;
 
       // $list = 'ciao';
       return response()->json($list);
@@ -231,12 +259,16 @@ class CompanyController extends Controller
 
       $employees = $company -> employees;
 
+
       if ($employees) {
         $employees->each(function($employee){
 
           $employee -> delete();
         });
       }
+
+      // Delete image file logo
+      \File::delete( public_path('storage/') . $company -> logo );
 
       $company-> delete();
 

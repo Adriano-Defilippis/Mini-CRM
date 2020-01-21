@@ -10,6 +10,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 // Route for show cpompany detail and Employees list
 Route::get('/company/{id}', 'CompanyController@show')->name('show.company');
+
 // Route for create form company, whit ajax call
 Route::get('/createcompany', 'CompanyController@create')->name('create.company');
 // Route for storage company, whit ajax call
@@ -22,6 +23,8 @@ Route::post('/company/update/{id}', 'CompanyController@update')->name('update.co
 Route::get('/company/delete/{id}', 'CompanyController@destroy')->name('delete.company');
 // Route for ajax call companies list
 Route::get('/companies', 'CompanyController@showMore')->name('show_more_comp');
+// Route for show more related employees of company
+Route::get('/company/relatedemp', 'CompanyController@show')->name('show_more_related_employees');
 // Route for ajax call last result list
 Route::get('/lastcompany', 'CompanyController@lastResult')->name('last.result');
 // Route for ajax call employee list
