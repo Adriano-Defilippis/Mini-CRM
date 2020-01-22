@@ -169,29 +169,36 @@ class CompanyController extends Controller
      */
     public function show($id)
       {
+          // $company = Company::findOrFail($id);
+          // // Related Employee of this Copany Id
+          // $employees = Employee::where('company_id', $id)->paginate(10);
+          //  $count_employees = 10;
+          //  $route = \Request::route()->getName();
+          //
+          //  if ($route == 'show_more_related_employees') {
+          //
+          //    $html = response()->json(view('components.page_employee', compact('company', 'employees', 'count_employees', 'route')));
+          //  }else{
+          //
+          //    $html = view('company_show', compact('company', 'employees', 'count_employees', 'route'));
+          //  }
+          //
+          // return $html;
+
           $company = Company::findOrFail($id);
           // Related Employee of this Copany Id
           $employees = Employee::where('company_id', $id)->paginate(10);
-           $count_employees = 10;
-           $route = \Request::route()->getName();
+          $count_employees = $employees -> total();
+          $route = \Request::route()->getName();
 
-           if ($route == 'show_more_related_employees') {
+          $results = [];
+          $results['company'] = $company;
+          $results['employees'] = $employees;
+          $results['count_employees'] = $count_employees;
+          $results['html'] = view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
 
-             $html = response()->json(view('components.page_employee', compact('company', 'employees', 'count_employees', 'route')));
-           }else{
+          return view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
 
-             $html = view('company_show', compact('company', 'employees', 'count_employees', 'route'));
-           }
-
-          return $html;
-
-          // $employees = Employee::orderBy('created_at')
-          //       ->paginate(10);
-          // $route = \Request::route()->getName();
-          // $count_employees = $employees -> lastPage();
-          // $output = view('components.page_employee', compact('employees', 'count_employees', 'route'))
-          //       ->render();
-          // return $output;
       }
 
     /**
