@@ -11378,3 +11378,15 @@ a.text-dark:focus {
   display: none;
 }
 
+.results_header_table {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  list-style: none;
+}
+
+.results_header_table li {
+  width: calc(100% / 6);
+}
+

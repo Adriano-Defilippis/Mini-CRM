@@ -41,7 +41,19 @@ $(document).on('click','.nav_employees', function(){
     console.log('data.type', page_search);
 
   }
-  console.log('page', page, page_search);
+  console.log('page', page_search);
+});
+
+// Azione click su navigazione pagina related result Employee in company
+$(document).on('click','.nav_related_employees', function(){
+
+  // add color placeholder
+  $(this).css('color', 'red');
+  var next_related_page = $(this).data('page');
+  var idcomp = $(this).data('id');
+
+  showMoreRelatedEmployee(next_related_page, idcomp)
+
 });
 
 // Azione click su delete Employee
@@ -53,6 +65,12 @@ $(document).on('click', '.btn_delete_empl', function(e){
 
 });
 
+// Azione Create invio form
+$(document).on('click', '#storage_employee', function(e){
+
+  var crateEmp =  $(this);
+  createEmployee(crateEmp);
+});
 // Azione Edit Employee
 $(document).on('click', '.btn_edit_empl', function(e){
 
@@ -229,7 +247,7 @@ function refreshEmployeeTr(myId){
 
     url: '/refresh/employee/' + myId,
     dataType: "JSON",
-    success: function(results){
+    success: function(results){// Placeholder page
 
       // Insert rendering page
       $('tr[employee-id="' + myId +'"]').html(results);
@@ -277,4 +295,84 @@ function liveSearchEmployee(mypage, placeholder){
       console.log(err);
     }
   });
+}
+
+// Show next result of Related Employee in Company Show view
+function showMoreRelatedEmployee(page, id){
+
+
+  console.log('next related page', page);
+
+
+  $.ajax({
+
+  url: '/company/relatedemp/' + id,
+  data: {
+    'page': page
+  },
+  success: function(results){
+
+    // Insert rendering page
+    $('.card_employees').html(results);
+
+    // Aggiungo colore stile segnaposto pagina
+    $('.nav_related_employees').each(function(key, item){
+
+      if ($(this).text() == page) {
+
+        $(this).css('color', 'red');
+      }
+      // console.log('page', key, item, $(this).text());
+    });
+
+    console.log("next related page ",results);
+  },
+
+  error: function(error){
+    console.log("error",error);
+  }
+  });
+
+}
+
+// Create a new Employee
+function createEmployee(val_comp){
+
+  // Form data JS Object
+  var formData = new FormData();
+  formData.append( '_token', $('meta[name="csrf-token"]').attr('content'));
+  formData.append('first_name', $('.employee_tbody th input[name="first_name"]').val());
+  formData.append('last_name', $('.employee_tbody td input[name="last_name"]').val());
+  formData.append('company_id', parseInt(val_comp.data('id')));
+  formData.append('email', $('.employee_tbody td input[name="email"]').val());
+  formData.append('phone', $('.employee_tbody td input[name="phone"]').val());
+  console.log('formdata', formData );
+  $.ajax({
+
+    url: '/employee/create',
+    type: "POST",
+    contentType: false,
+    processData: false,
+    dataType: "JSON",
+    data: formData,
+    success: function(results){
+
+      console.log(results);
+        $('input').val('');
+
+        showMoreRelatedEmployee(1, parseInt(val_comp.data('id')));
+
+    },
+    error: function(err){
+      console.log(err);
+
+      var message_errors = err.responseJSON.errors;
+
+      // Funzione stampa errori in pagina
+      errorMessageForm(message_errors);
+    }
+  });
+
+
+
 }

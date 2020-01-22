@@ -82,9 +82,28 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        //
+
+      $validatedEmployee = $request -> validated();
+
+      $new_employee = Employee::make($validatedEmployee);
+      $new_employee -> company() -> associate($request -> company_id);
+      $new_employee-> save();
+      // $coutn_total = Employee::all()->paginate(10);
+
+      // $last_page = $coutn_total -> lastPage();
+
+      $list = [];
+      $list[] = $validatedEmployee;
+      // $list[] = $last_page;
+      $list[] = $request -> all(); 
+
+      // return redirect()->route('/company/'. $request -> company_id);
+      // return back();
+      // return redirect()->action('CompanyController@show');
+      // return redirect('home');
+      return response()->json($list);
     }
 
     /**

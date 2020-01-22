@@ -147,9 +147,18 @@ class AjaxCompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request, $id)
+    public function showMoreRelatedEmp(Request $request, $id)
     {
 
+      $company = Company::findOrFail($id);
+      $page = $request -> get('page');
+      $employees = Employee::where('company_id', $id)->paginate(10);
+      $companies = Company::all();
+
+      $count_employees = $employees -> lastPage();
+      $route = \Request::route()->getName();
+
+      return view('components.page_employee', compact('company','employees', 'count_employees', 'route', 'companies'));
 
 
     }

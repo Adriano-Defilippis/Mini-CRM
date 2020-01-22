@@ -24,11 +24,13 @@ Route::get('/company/delete/{id}', 'CompanyController@destroy')->name('delete.co
 // Route for ajax call companies list
 Route::get('/companies', 'CompanyController@showMore')->name('show_more_comp');
 // Route for show more related employees of company
-Route::get('/company/relatedemp', 'CompanyController@show')->name('show_more_related_employees');
+Route::get('/company/relatedemp/{id}', 'AjaxCompanyController@showMoreRelatedEmp')->name('show_more_related_employees');
 // Route for ajax call last result list
 Route::get('/lastcompany', 'CompanyController@lastResult')->name('last.result');
 // Route for ajax call employee list
 Route::get('/employees', 'EmployeeController@showMore')->name('show_more_empl');
+// Route for ajax call employee list
+Route::post('/employee/create', 'EmployeeController@store')->name('create.employee');
 // Route for delete Employee, whit ajax call
 Route::get('/employee/delete/{id}', 'EmployeeController@destroy')->name('delete.employee');
 // Route for edit Employee, whit ajax call

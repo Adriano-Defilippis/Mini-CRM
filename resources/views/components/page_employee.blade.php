@@ -1,6 +1,7 @@
 <table class="table table-borderless">
   @php
     use App\Company;
+    $companies = Company::all();
   @endphp
   <thead>
     <tr>
@@ -13,6 +14,30 @@
     </tr>
   </thead>
   <tbody class="employee_tbody">
+
+    @if ($route == 'show.company' || $route == 'show_more_related_employees')
+      {{-- Form create employee --}}
+      <th employee-id="">
+        <input type="text" name="first_name" value=" ">
+      </th>
+      <td employee-id=" ">
+        <input type="text" name="last_name" value=" ">
+      </td>
+      <td>
+        {{$company -> name}}
+      <td>
+        <input employee-id="" type="email" name="email"value="">
+      </td>
+      <td>
+        <input employee-id="" type="phone" name="phone"value="">
+      </td>
+      <td>
+        <button id="storage_employee" data-id="{{$company -> id}}}" type="button" class="btn btn-light">Storage</button>
+      </td>
+    @endif
+
+  </th>
+
     @foreach ($employees as $employee)
 
 
@@ -48,14 +73,14 @@
     @if ($route == 'search.employee')
 
       <span class="nav_employees" data-type="search_emp_page"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
-      {{$route}}
 
-    @elseif ($route == 'show.company')
-      {{$route}}
-        <span class="nav_employees" data-type="show_more_related_emp"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
+
+    @elseif ($route == 'show.company' || $route == "show_more_related_employees")
+
+        <span class="nav_related_employees" data-type="show_more_related_emp" data-id="{{$company -> id}}"  data-page="{{$counter_employees}}">  {{ $counter_employees++ }}  </span>
     @else
       <span class="nav_employees" data-type="emp_res" data-type="comp_res" data-page="{{$counter_employees}}"> {{ $counter_employees++ }} </span>
-      {{$route}}
+
     @endif
 @endfor
 </p>

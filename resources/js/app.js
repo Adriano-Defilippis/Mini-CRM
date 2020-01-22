@@ -18,8 +18,8 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-// Vue.component('tr-employees', require('./components_vue/employee_row').default);
-Vue.component('tr-employee');
+// Vue.component('tr-employees', require('./components_vue/employee_tablerow.blade.php').default);
+Vue.component('employee');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40,7 +40,7 @@ $(document).ready(init);
 function init() {
 
   const app = new Vue({
-      el: '#app1',
+      el: '#employee-vue',
   });
 
   $.ajaxSetup({
@@ -49,6 +49,7 @@ function init() {
     }
   });
 
+  Vue.component('tr_employee');
   require('./gestione_company');
   require('./gestione_employee');
   require('./gestione_show_company');

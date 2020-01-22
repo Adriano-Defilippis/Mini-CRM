@@ -46,3 +46,15 @@ tr{
 #search_comp_mess{
   display: none;
 }
+
+// Css tabella risultai emplyee
+.results_header_table{
+
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+
+  li{
+    width: calc(100% / 6);
+  }
+}

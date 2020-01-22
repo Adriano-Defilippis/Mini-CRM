@@ -167,37 +167,41 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
       {
+          $company = Company::findOrFail($id);
+          
+          // Related Employee of this Copany Id
+          $employees = Employee::where('company_id', $id)->paginate(10);
+          $count_employees = $employees -> lastPage();
+          $route = \Request::route()->getName();
+
+
+
+           $html = view('page.company_blade_show', compact('company', 'employees', 'count_employees', 'route'));
+
+
+           if ($route == 'show_more_related_employees') {
+
+             $html = view('components.page_employee', compact('employees', 'count_employees', 'route'));
+           }
+
+          return $html;
+
+          //BACK PER VUE
           // $company = Company::findOrFail($id);
           // // Related Employee of this Copany Id
           // $employees = Employee::where('company_id', $id)->paginate(10);
-          //  $count_employees = 10;
-          //  $route = \Request::route()->getName();
+          // $count_employees = $employees -> total();
+          // $route = \Request::route()->getName();
           //
-          //  if ($route == 'show_more_related_employees') {
+          // $results = [];
+          // $results['company'] = $company;
+          // $results['employees'] = $employees;
+          // $results['count_employees'] = $count_employees;
+          // $results['html'] = view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
           //
-          //    $html = response()->json(view('components.page_employee', compact('company', 'employees', 'count_employees', 'route')));
-          //  }else{
-          //
-          //    $html = view('company_show', compact('company', 'employees', 'count_employees', 'route'));
-          //  }
-          //
-          // return $html;
-
-          $company = Company::findOrFail($id);
-          // Related Employee of this Copany Id
-          $employees = Employee::where('company_id', $id)->paginate(10);
-          $count_employees = $employees -> total();
-          $route = \Request::route()->getName();
-
-          $results = [];
-          $results['company'] = $company;
-          $results['employees'] = $employees;
-          $results['count_employees'] = $count_employees;
-          $results['html'] = view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
-
-          return view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
+          // return view('page.company_vue_show', compact('company', 'employees', 'count_employees'));
 
       }
 

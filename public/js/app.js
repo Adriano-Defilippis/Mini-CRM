@@ -49356,9 +49356,9 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-// Vue.component('tr-employees', require('./components_vue/employee_row').default);
+// Vue.component('tr-employees', require('./components_vue/employee_tablerow.blade.php').default);
 
-Vue.component('tr-employee');
+Vue.component('employee');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49371,13 +49371,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(init); // Codice p
 
 function init() {
   var app = new Vue({
-    el: '#app1'
+    el: '#employee-vue'
   });
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': jquery__WEBPACK_IMPORTED_MODULE_0___default()('meta[name="csrf-token"]').attr('content')
     }
   });
+  Vue.component('tr_employee');
 
   __webpack_require__(/*! ./gestione_company */ "./resources/js/gestione_company.js");
 
@@ -49481,7 +49482,7 @@ $(document).on('click', '.nav_companies', function (e) {
     liveSearchCompany(page_search);
   }
 
-  console.log('page', page_search);
+  console.log('page', page_empl_res);
 }); // Azione tasto back
 
 $(document).on('click', '.back_btn', function (e) {
@@ -49703,35 +49704,8 @@ function getCompanies(page) {
       console.log("error", _error);
     }
   });
-} // Function to get risultati Employee rspetto alla compagnia
+} // Function for form image ajax
 
-
-function getRelatedEmp(page) {
-  console.log('page', page);
-  $.ajax({
-    url: '/company/relatedemp',
-    data: {
-      page: page
-    },
-    success: function success(data) {
-      // Insert rendering page
-      $('.card_companies').html(data); // Aggiungo colore stile segnaposto pagina
-
-      $('.nav_companies').each(function (key, item) {
-        if ($(this).text() == page) {
-          $(this).css('color', 'red');
-        } // console.log('page', key, item, $(this).text());
-
-      });
-      console.log("log di get company ", page);
-    },
-    error: function error(_error2) {
-      console.log("error", _error2);
-    }
-  });
-}
-
-; // Function for form image ajax
 
 function getFormImg(id, append, page) {
   // Form data JS Object
@@ -49749,8 +49723,8 @@ function getFormImg(id, append, page) {
       append.html(data);
       console.log("log di data ", data);
     },
-    error: function error(_error3) {
-      console.log("error", _error3);
+    error: function error(_error2) {
+      console.log("error", _error2);
     }
   });
 }
@@ -49851,6 +49825,11 @@ function refreshTr(myId) {
       console.log(err);
     }
   });
+} // Show next result of Related Employee in Company Show view
+
+
+function showMoreRelatedEmployee(page) {
+  console.log("olaaaas", page);
 }
 
 /***/ }),
@@ -49894,12 +49873,25 @@ $(document).on('click', '.nav_employees', function () {
     console.log('data.type', page_search);
   }
 
-  console.log('page', page, page_search);
+  console.log('page', page_search);
+}); // Azione click su navigazione pagina related result Employee in company
+
+$(document).on('click', '.nav_related_employees', function () {
+  // add color placeholder
+  $(this).css('color', 'red');
+  var next_related_page = $(this).data('page');
+  var idcomp = $(this).data('id');
+  showMoreRelatedEmployee(next_related_page, idcomp);
 }); // Azione click su delete Employee
 
 $(document).on('click', '.btn_delete_empl', function (e) {
   var id = $(this).data('id');
   destroyEmployee(id, page_emp);
+}); // Azione Create invio form
+
+$(document).on('click', '#storage_employee', function (e) {
+  var crateEmp = $(this);
+  createEmployee(crateEmp);
 }); // Azione Edit Employee
 
 $(document).on('click', '.btn_edit_empl', function (e) {
@@ -50035,6 +50027,7 @@ function refreshEmployeeTr(myId) {
     url: '/refresh/employee/' + myId,
     dataType: "JSON",
     success: function success(results) {
+      // Placeholder page
       // Insert rendering page
       $('tr[employee-id="' + myId + '"]').html(results);
       console.log('refresh', results);
@@ -50075,6 +50068,64 @@ function liveSearchEmployee(mypage, placeholder) {
     },
     error: function error(err) {
       console.log(err);
+    }
+  });
+} // Show next result of Related Employee in Company Show view
+
+
+function showMoreRelatedEmployee(page, id) {
+  console.log('next related page', page);
+  $.ajax({
+    url: '/company/relatedemp/' + id,
+    data: {
+      'page': page
+    },
+    success: function success(results) {
+      // Insert rendering page
+      $('.card_employees').html(results); // Aggiungo colore stile segnaposto pagina
+
+      $('.nav_related_employees').each(function (key, item) {
+        if ($(this).text() == page) {
+          $(this).css('color', 'red');
+        } // console.log('page', key, item, $(this).text());
+
+      });
+      console.log("next related page ", results);
+    },
+    error: function error(_error2) {
+      console.log("error", _error2);
+    }
+  });
+} // Create a new Employee
+
+
+function createEmployee(val_comp) {
+  // Form data JS Object
+  var formData = new FormData();
+  formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+  formData.append('first_name', $('.employee_tbody th input[name="first_name"]').val());
+  formData.append('last_name', $('.employee_tbody td input[name="last_name"]').val());
+  formData.append('company_id', parseInt(val_comp.data('id')));
+  formData.append('email', $('.employee_tbody td input[name="email"]').val());
+  formData.append('phone', $('.employee_tbody td input[name="phone"]').val());
+  console.log('formdata', formData);
+  $.ajax({
+    url: '/employee/create',
+    type: "POST",
+    contentType: false,
+    processData: false,
+    dataType: "JSON",
+    data: formData,
+    success: function success(results) {
+      console.log(results);
+      $('input').val('');
+      showMoreRelatedEmployee(1, parseInt(val_comp.data('id')));
+    },
+    error: function error(err) {
+      console.log(err);
+      var message_errors = err.responseJSON.errors; // Funzione stampa errori in pagina
+
+      errorMessageForm(message_errors);
     }
   });
 }

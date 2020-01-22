@@ -43,10 +43,7 @@ console.log('gestione_company.js');
       // Chiamata ajax per i risultati successivi
       getCompanies(page);
 
-    }
-
-
-    else if($(this).data('type') == 'search_comp_res' ) {
+    }else if($(this).data('type') == 'search_comp_res' ) {
 
        page_search = $(this).data('page');
        console.log('data.type', page_search);
@@ -54,7 +51,7 @@ console.log('gestione_company.js');
        // Chiamata Ajax per risultati successivi ricerca dati
        liveSearchCompany(page_search);
      }
-     console.log('page', page_search);
+     console.log('page', page_empl_res);
    });
 
 
@@ -368,39 +365,7 @@ console.log('gestione_company.js');
 
   }
 
-  // Function to get risultati Employee rspetto alla compagnia
-  function getRelatedEmp(page){
 
-    console.log('page', page);
-    $.ajax({
-
-      url: '/company/relatedemp',
-      data: {
-        page: page
-      },
-      success: function(data){
-
-        // Insert rendering page
-        $('.card_companies').html(data);
-
-        // Aggiungo colore stile segnaposto pagina
-        $('.nav_companies').each(function(key, item){
-
-          if ($(this).text() == page) {
-
-            $(this).css('color', 'red');
-          }
-          // console.log('page', key, item, $(this).text());
-        });
-
-        console.log("log di get company ", page);
-      },
-
-      error: function(error){
-        console.log("error",error);
-      }
-    });
-  };
 
   // Function for form image ajax
   function getFormImg(id, append, page){
@@ -550,4 +515,10 @@ console.log('gestione_company.js');
         console.log(err);
       }
     });
+  }
+
+  // Show next result of Related Employee in Company Show view
+  function showMoreRelatedEmployee(page){
+
+    console.log("olaaaas", page);
   }
